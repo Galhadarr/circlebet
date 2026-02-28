@@ -98,7 +98,7 @@ export function Header() {
                 {icon}
                 {label}
                 {isActive && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-blue rounded-full" />
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue rounded-full" />
                 )}
               </Link>
             );
