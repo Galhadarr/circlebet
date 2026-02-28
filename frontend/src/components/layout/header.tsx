@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useAuthStore } from "@/stores/auth-store";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { UserAvatar } from "@/components/ui/user-avatar";
+import { ProfileDropdown } from "@/components/layout/profile-dropdown";
 
 const navTabs = [
   { href: "/", label: "Home", exact: true, public: true },
@@ -15,10 +15,7 @@ const navTabs = [
 ];
 
 export function Header() {
-  const user = useAuthStore((s) => s.user);
   const token = useAuthStore((s) => s.token);
-  const logout = useAuthStore((s) => s.logout);
-  const router = useRouter();
   const pathname = usePathname();
 
   const isAuthenticated = !!token;
@@ -75,22 +72,8 @@ export function Header() {
         <div className="flex items-center gap-3 shrink-0">
           {isAuthenticated ? (
             <>
-              {user?.display_name && (
-                <div className="hidden sm:flex items-center gap-2">
-                  <UserAvatar name={user.display_name} />
-                  <span className="text-sm text-text-secondary">{user.display_name}</span>
-                </div>
-              )}
               <ThemeToggle />
-              <button
-                onClick={() => {
-                  logout();
-                  router.push("/login");
-                }}
-                className="text-sm text-text-muted hover:text-text-primary transition"
-              >
-                Log out
-              </button>
+              <ProfileDropdown />
             </>
           ) : (
             <>
