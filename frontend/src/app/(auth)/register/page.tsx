@@ -96,7 +96,6 @@ function RegisterContent() {
           </div>
           <div className="flex justify-center">
             <GoogleLogin
-              locale="en"
               onSuccess={(response) => {
                 if (response.credential) {
                   googleAuth.mutate(response.credential, {
