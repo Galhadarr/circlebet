@@ -8,10 +8,45 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { ProfileDropdown } from "@/components/layout/profile-dropdown";
 
 const navTabs = [
-  { href: "/", label: "Home", exact: true, public: true },
-  { href: "/circles", label: "Circles" },
-  { href: "/portfolio", label: "Portfolio" },
-  { href: "/docs", label: "Docs" },
+  {
+    href: "/",
+    label: "Home",
+    exact: true,
+    public: true,
+    icon: (
+      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1" />
+      </svg>
+    ),
+  },
+  {
+    href: "/circles",
+    label: "Circles",
+    icon: (
+      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/portfolio",
+    label: "Portfolio",
+    icon: (
+      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/docs",
+    label: "Docs",
+    icon: (
+      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0118 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+      </svg>
+    ),
+  },
 ];
 
 export function Header() {
@@ -34,7 +69,7 @@ export function Header() {
 
         {/* Center nav tabs — hidden on mobile (bottom-nav handles it) */}
         <nav className="hidden sm:flex items-center gap-1">
-          {navTabs.map(({ href, label, exact, public: isPublic }) => {
+          {navTabs.map(({ href, label, exact, public: isPublic, icon }) => {
             const isActive = exact ? pathname === href : pathname?.startsWith(href);
 
             if (!isAuthenticated && !isPublic) {
@@ -42,8 +77,9 @@ export function Header() {
                 <Link
                   key={href}
                   href={`/login?redirect=${encodeURIComponent(href)}`}
-                  className="relative px-4 py-2 text-sm font-medium text-text-muted hover:text-text-primary transition rounded-lg hover:bg-bg-tertiary"
+                  className="relative flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-text-muted hover:text-text-primary transition rounded-lg hover:bg-bg-tertiary"
                 >
+                  {icon}
                   {label}
                 </Link>
               );
@@ -53,12 +89,13 @@ export function Header() {
               <Link
                 key={href}
                 href={href}
-                className={`relative px-4 py-2 text-sm font-medium transition rounded-lg ${
+                className={`relative flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition rounded-lg ${
                   isActive
                     ? "text-blue"
                     : "text-text-secondary hover:text-text-primary hover:bg-bg-tertiary"
                 }`}
               >
+                {icon}
                 {label}
                 {isActive && (
                   <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-blue rounded-full" />
