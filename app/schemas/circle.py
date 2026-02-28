@@ -2,11 +2,11 @@ import uuid
 from datetime import datetime
 from decimal import Decimal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class CircleCreate(BaseModel):
-    name: str
+    name: str = Field(min_length=3, max_length=20)
     description: str | None = None
 
 
