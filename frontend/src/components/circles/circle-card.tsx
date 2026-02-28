@@ -29,7 +29,7 @@ export function CircleCard({ circle }: { circle: CircleResponse }) {
   return (
     <div
       onClick={() => router.push(`/circle/${circle.id}`)}
-      className="group relative bg-surface border border-border rounded-2xl p-6 shadow-sm cursor-pointer hover:border-blue/30 hover:shadow-md transition-all duration-200 overflow-hidden"
+      className="group relative bg-surface border border-border rounded-2xl p-6 shadow-sm cursor-pointer hover:border-blue/30 hover:shadow-md hover:-translate-y-1 transition-all duration-200 overflow-hidden"
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue/5 to-transparent rounded-bl-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
       <div className="relative">
