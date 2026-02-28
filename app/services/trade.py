@@ -175,3 +175,13 @@ async def get_trade_history(db: AsyncSession, market_id: uuid.UUID) -> list[Trad
         .order_by(Trade.timestamp.desc())
     )
     return list(result.scalars().all())
+
+
+async def get_user_trade_history(db: AsyncSession, user_id: uuid.UUID) -> list[Trade]:
+    result = await db.execute(
+        select(Trade)
+        .options(selectinload(Trade.market))
+        .where(Trade.user_id == user_id)
+        .order_by(Trade.timestamp.desc())
+    )
+    return list(result.scalars().all())

@@ -26,7 +26,7 @@ export default function MarketPage() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center py-12">
+      <div className="flex justify-center py-16">
         <Spinner />
       </div>
     );
@@ -50,59 +50,67 @@ export default function MarketPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 animate-fade-in-up" style={{ "--delay": "0s" } as React.CSSProperties}>
       {/* Back link */}
       <Link
         href={`/circle/${market.circle_id}`}
-        className="text-sm text-text-muted hover:text-text-primary transition"
+        className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-text-primary transition"
       >
-        &larr; Back to circle
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+        Back to circle
       </Link>
 
-      {/* Title + prices */}
-      <div>
-        <div className="flex items-start justify-between gap-3">
-          <h1 className="text-2xl font-bold">{market.title}</h1>
-          <Badge
-            variant={
-              market.status === "OPEN"
-                ? "green"
-                : market.status === "RESOLVED"
-                  ? "blue"
-                  : "gray"
-            }
-          >
-            {market.status}
-          </Badge>
-        </div>
-        {market.description && (
-          <p className="text-sm text-text-secondary mt-1">
-            {market.description}
-          </p>
-        )}
-        <div className="flex gap-6 mt-3">
-          <div>
-            <p className="text-xs text-text-muted">YES</p>
-            <p className="text-2xl font-bold font-mono text-green">
-              {formatPrice(market.price_yes)}
-            </p>
+      {/* Title + status hero */}
+      <div className="relative overflow-hidden bg-surface border border-border rounded-2xl p-8 shadow-sm">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-blue/5 to-transparent rounded-bl-full pointer-events-none" />
+        <div className="relative">
+          <div className="flex items-start justify-between gap-3 mb-2">
+            <h1 className="text-2xl font-bold leading-snug">{market.title}</h1>
+            <Badge
+              variant={
+                market.status === "OPEN"
+                  ? "green"
+                  : market.status === "RESOLVED"
+                    ? "blue"
+                    : "gray"
+              }
+            >
+              {market.status}
+            </Badge>
           </div>
-          <div>
-            <p className="text-xs text-text-muted">NO</p>
-            <p className="text-2xl font-bold font-mono text-red">
-              {formatPrice(market.price_no)}
+          {market.description && (
+            <p className="text-sm text-text-secondary mt-1 max-w-lg">
+              {market.description}
             </p>
+          )}
+
+          {/* Price hero cards */}
+          <div className="flex gap-4 mt-6">
+            <div className="flex-1 bg-green-dim border border-green/20 rounded-xl p-4 text-center">
+              <p className="text-xs text-text-muted font-mono mb-1">YES</p>
+              <p className="text-3xl font-bold font-mono text-green">
+                {formatPrice(market.price_yes)}
+              </p>
+            </div>
+            <div className="flex-1 bg-red-dim border border-red/20 rounded-xl p-4 text-center">
+              <p className="text-xs text-text-muted font-mono mb-1">NO</p>
+              <p className="text-3xl font-bold font-mono text-red">
+                {formatPrice(market.price_no)}
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Trade buttons */}
       {market.status === "OPEN" && (
-        <div className="flex gap-3">
+        <div className="flex gap-4">
           <Button
             variant="green"
             size="lg"
-            className="flex-1"
+            className="flex-1 rounded-xl py-4 text-base"
             onClick={() => openModal(market.id, "YES")}
           >
             Buy Yes
@@ -110,7 +118,7 @@ export default function MarketPage() {
           <Button
             variant="red"
             size="lg"
-            className="flex-1"
+            className="flex-1 rounded-xl py-4 text-base"
             onClick={() => openModal(market.id, "NO")}
           >
             Buy No
@@ -120,7 +128,7 @@ export default function MarketPage() {
 
       {/* Resolve */}
       {canResolve && (
-        <div className="bg-bg-secondary border border-border rounded-xl p-4 space-y-3">
+        <div className="bg-surface border border-border rounded-2xl p-5 shadow-sm space-y-3">
           <p className="text-sm font-medium">Resolve this market</p>
           <div className="flex gap-3">
             <Button
@@ -145,8 +153,11 @@ export default function MarketPage() {
       <MarketStats market={market} />
 
       {/* Chart */}
-      <div className="bg-bg-secondary border border-border rounded-xl p-4">
-        <h2 className="font-semibold mb-3">Price History</h2>
+      <div
+        className="bg-surface border border-border rounded-2xl p-5 shadow-sm animate-fade-in-up"
+        style={{ "--delay": "0.1s" } as React.CSSProperties}
+      >
+        <h2 className="font-semibold mb-4">Price History</h2>
         <PriceChart
           trades={trades ?? []}
           currentPriceYes={market.price_yes}
@@ -154,8 +165,11 @@ export default function MarketPage() {
       </div>
 
       {/* Trade history */}
-      <div>
-        <h2 className="font-semibold mb-3">Recent Trades</h2>
+      <div
+        className="animate-fade-in-up"
+        style={{ "--delay": "0.15s" } as React.CSSProperties}
+      >
+        <h2 className="font-semibold mb-4">Recent Trades</h2>
         <TradeHistory trades={trades ?? []} />
       </div>
 

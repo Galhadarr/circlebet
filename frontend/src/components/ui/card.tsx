@@ -7,7 +7,7 @@ interface CardProps {
 export function Card({ children, className = "", onClick }: CardProps) {
   return (
     <div
-      className={`bg-bg-secondary border border-border rounded-xl p-4 ${onClick ? "cursor-pointer hover:border-text-muted transition" : ""} ${className}`}
+      className={`bg-surface border border-border rounded-2xl p-5 shadow-sm ${onClick ? "cursor-pointer hover:border-blue/30 hover:shadow-md transition-all duration-200" : ""} ${className}`}
       onClick={onClick}
     >
       {children}

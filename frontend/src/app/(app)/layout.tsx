@@ -6,7 +6,6 @@ import { useAuthStore } from "@/stores/auth-store";
 import { useMe } from "@/hooks/use-auth";
 import { Header } from "@/components/layout/header";
 import { BottomNav } from "@/components/layout/bottom-nav";
-import { Sidebar } from "@/components/layout/sidebar";
 import { Spinner } from "@/components/ui/spinner";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -33,15 +32,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen flex">
-      <Sidebar />
-      <div className="flex-1 flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-1 px-4 py-6 pb-20 sm:pb-6 max-w-5xl w-full mx-auto">
-          {children}
-        </main>
-        <BottomNav />
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main className="flex-1 px-4 py-6 pb-20 sm:pb-6 max-w-5xl w-full mx-auto">
+        {children}
+      </main>
+      <BottomNav />
     </div>
   );
 }

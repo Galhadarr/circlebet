@@ -40,3 +40,15 @@ class TradeHistoryEntry(BaseModel):
     shares: Decimal
     price_at_trade: Decimal
     timestamp: datetime
+
+
+class UserTradeHistoryEntry(BaseModel):
+    id: uuid.UUID
+    market_id: uuid.UUID
+    market_title: str
+    side: str
+    direction: str
+    amount: Decimal
+    shares: Decimal
+    price_at_trade: Decimal
+    timestamp: datetime

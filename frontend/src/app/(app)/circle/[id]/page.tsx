@@ -27,7 +27,7 @@ export default function CirclePage() {
 
   if (circleLoading) {
     return (
-      <div className="flex justify-center py-12">
+      <div className="flex justify-center py-16">
         <Spinner />
       </div>
     );
@@ -42,33 +42,36 @@ export default function CirclePage() {
   const displayed = tab === "active" ? activeMarkets : resolvedMarkets;
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <div className="flex items-center gap-3 mb-1">
-          <h1 className="text-2xl font-bold">{circle.name}</h1>
-          <Badge variant="blue">{circle.member_count} members</Badge>
+    <div className="space-y-8 animate-fade-in-up" style={{ "--delay": "0s" } as React.CSSProperties}>
+      {/* Hero banner */}
+      <div className="relative overflow-hidden bg-surface border border-border rounded-2xl p-8 shadow-sm">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-blue/5 to-transparent rounded-bl-full pointer-events-none" />
+        <div className="relative">
+          <div className="flex items-center gap-3 mb-2">
+            <h1 className="text-3xl font-bold tracking-tight">{circle.name}</h1>
+            <Badge variant="blue">{circle.member_count} members</Badge>
+          </div>
+          {circle.description && (
+            <p className="text-sm text-text-secondary max-w-lg">{circle.description}</p>
+          )}
         </div>
-        {circle.description && (
-          <p className="text-sm text-text-secondary">{circle.description}</p>
-        )}
       </div>
 
       {/* Invite */}
       <InviteLink inviteToken={circle.invite_token} />
 
-      <div className="flex flex-col lg:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-8">
         {/* Markets */}
-        <div className="flex-1 space-y-4">
+        <div className="flex-1 space-y-5">
           <div className="flex items-center justify-between">
-            <div className="flex gap-2">
+            <div className="flex gap-1 bg-bg-tertiary rounded-xl p-1">
               {(["active", "resolved"] as Tab[]).map((t) => (
                 <button
                   key={t}
                   onClick={() => setTab(t)}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                     tab === t
-                      ? "bg-bg-tertiary text-text-primary"
+                      ? "bg-surface text-text-primary shadow-sm"
                       : "text-text-muted hover:text-text-secondary"
                   }`}
                 >
@@ -82,40 +85,50 @@ export default function CirclePage() {
           </div>
 
           {marketsLoading ? (
-            <div className="flex justify-center py-8">
+            <div className="flex justify-center py-12">
               <Spinner />
             </div>
           ) : displayed.length > 0 ? (
-            <div className="space-y-3">
-              {displayed.map((market) => (
-                <MarketCard key={market.id} market={market} />
+            <div className="space-y-4">
+              {displayed.map((market, i) => (
+                <div
+                  key={market.id}
+                  className="animate-fade-in-up"
+                  style={{ "--delay": `${0.05 + i * 0.04}s` } as React.CSSProperties}
+                >
+                  <MarketCard market={market} />
+                </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 text-text-secondary">
-              {tab === "active"
-                ? "No active markets yet. Create one!"
-                : "No resolved markets yet."}
+            <div className="text-center py-16 bg-surface border border-border rounded-2xl shadow-sm">
+              <p className="text-text-secondary">
+                {tab === "active"
+                  ? "No active markets yet. Create one!"
+                  : "No resolved markets yet."}
+              </p>
             </div>
           )}
         </div>
 
         {/* Leaderboard sidebar */}
-        <div className="lg:w-72 space-y-3">
-          <div className="flex items-center justify-between">
-            <h2 className="font-semibold">Leaderboard</h2>
-            <Link
-              href={`/circle/${id}/leaderboard`}
-              className="text-xs text-blue hover:underline"
-            >
-              View all
-            </Link>
+        <div className="lg:w-80 space-y-4">
+          <div className="bg-surface border border-border rounded-2xl p-5 shadow-sm">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-semibold">Leaderboard</h2>
+              <Link
+                href={`/circle/${id}/leaderboard`}
+                className="text-xs text-blue hover:underline font-medium"
+              >
+                View all
+              </Link>
+            </div>
+            {leaderboard && leaderboard.length > 0 ? (
+              <LeaderboardTable entries={leaderboard.slice(0, 5)} />
+            ) : (
+              <p className="text-sm text-text-muted text-center py-4">No data yet.</p>
+            )}
           </div>
-          {leaderboard && leaderboard.length > 0 ? (
-            <LeaderboardTable entries={leaderboard.slice(0, 5)} />
-          ) : (
-            <p className="text-sm text-text-muted">No data yet.</p>
-          )}
         </div>
       </div>
 

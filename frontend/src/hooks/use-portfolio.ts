@@ -2,12 +2,19 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
-import type { PortfolioResponse, LeaderboardEntry } from "@/lib/types";
+import type { PortfolioResponse, LeaderboardEntry, UserTradeHistoryEntry } from "@/lib/types";
 
 export function usePortfolio() {
   return useQuery({
     queryKey: ["portfolio"],
     queryFn: () => api.get<PortfolioResponse>("/portfolio"),
+  });
+}
+
+export function useMyTrades() {
+  return useQuery({
+    queryKey: ["portfolio", "trades"],
+    queryFn: () => api.get<UserTradeHistoryEntry[]>("/portfolio/trades"),
   });
 }
 
