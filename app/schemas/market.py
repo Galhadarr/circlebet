@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 
 class MarketCreate(BaseModel):
     circle_id: uuid.UUID
-    title: str
+    title: str = Field(min_length=5, max_length=50)
     description: str | None = None
     end_date: datetime
     image_url: str | None = None

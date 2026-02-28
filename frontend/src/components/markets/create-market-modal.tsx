@@ -61,8 +61,16 @@ export function CreateMarketModal({ circleId, isOpen, onClose }: Props) {
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
+  const titleError =
+    title.length > 0 && title.length < 5
+      ? "Question must be at least 5 characters."
+      : title.length > 50
+        ? "Question must be 50 characters or fewer."
+        : undefined;
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (titleError) return;
     createMarket.mutate(
       {
         circle_id: circleId,
@@ -89,13 +97,19 @@ export function CreateMarketModal({ circleId, isOpen, onClose }: Props) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Create Market">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          label="Question"
-          placeholder="Will X happen by Y date?"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
+        <div className="space-y-1.5">
+          <Input
+            label="Question"
+            placeholder="Will X happen by Y date?"
+            value={title}
+            onChange={(e) => setTitle(e.target.value.slice(0, 50))}
+            error={titleError}
+            required
+          />
+          <p className={`text-xs text-right tabular-nums ${title.length >= 50 ? "text-red" : "text-text-muted"}`}>
+            {title.length}/50
+          </p>
+        </div>
         <Input
           label="Description (optional)"
           placeholder="Additional context..."
@@ -176,7 +190,7 @@ export function CreateMarketModal({ circleId, isOpen, onClose }: Props) {
           type="submit"
           className="w-full"
           loading={createMarket.isPending}
-          disabled={uploading}
+          disabled={uploading || !!titleError || title.length < 5}
         >
           Create Market
         </Button>
