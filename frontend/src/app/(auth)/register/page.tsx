@@ -54,6 +54,8 @@ function RegisterContent() {
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
           required
+          minLength={3}
+          maxLength={15}
         />
         <Input
           label="Email"
