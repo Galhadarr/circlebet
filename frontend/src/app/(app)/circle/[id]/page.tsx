@@ -43,6 +43,17 @@ export default function CirclePage() {
 
   return (
     <div className="space-y-8 animate-fade-in-up" style={{ "--delay": "0s" } as React.CSSProperties}>
+      {/* Back navigation */}
+      <Link
+        href="/dashboard"
+        className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-text-primary transition-colors"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+        Back to dashboard
+      </Link>
+
       {/* Hero banner */}
       <div className="relative overflow-hidden bg-surface border border-border rounded-2xl p-8 shadow-sm">
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-blue/5 to-transparent rounded-bl-full pointer-events-none" />
