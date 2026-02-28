@@ -58,14 +58,14 @@ export function Header() {
 
   return (
     <header className="relative z-20 border-b border-border bg-bg-primary/80 backdrop-blur-md">
-      <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2 shrink-0"
+          className="flex items-center gap-2.5 shrink-0"
         >
-          <Image src="/icon.svg" alt="CircleBet" width={24} height={24} />
-          <span className="text-xl font-bold tracking-tight">CircleBet</span>
+          <Image src="/icon.svg" alt="CircleBet" width={30} height={30} />
+          <span className="text-2xl font-bold tracking-tight">CircleBet</span>
         </Link>
 
         {/* Center nav tabs — hidden on mobile (bottom-nav handles it) */}
