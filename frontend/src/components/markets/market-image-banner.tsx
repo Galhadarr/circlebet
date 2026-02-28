@@ -5,7 +5,7 @@ interface Props {
   className?: string;
 }
 
-const gradients = [
+const gradients: [string, string][] = [
   ["#3b82f6", "#8b5cf6"],
   ["#10b981", "#3b82f6"],
   ["#f59e0b", "#ef4444"],
