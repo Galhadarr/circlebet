@@ -24,30 +24,26 @@ export function MarketCard({ market }: { market: MarketResponse }) {
   const hasVolume = totalVol > 0;
 
   return (
-    <div className="bg-surface border border-border rounded-2xl p-5 shadow-sm hover:border-blue/30 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 space-y-3">
-      <div
-        className="cursor-pointer"
-        onClick={() => router.push(`/market/${market.id}`)}
-      >
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="font-medium leading-snug">{market.title}</h3>
-          <Badge
-            variant={statusBadge[market.status] ?? "gray"}
-          >
-            {market.status}
-          </Badge>
-        </div>
-        {market.status === "OPEN" && (
-          <p className="text-xs text-text-muted mt-1 font-mono">
-            Ends in {formatTimeRemaining(market.end_date)}
-          </p>
-        )}
-        {market.status === "RESOLVED" && market.outcome && (
-          <p className="text-xs text-text-muted mt-1">
-            Resolved: <span className={market.outcome === "YES" ? "text-green" : "text-red"}>{market.outcome}</span>
-          </p>
-        )}
+    <div
+      className="bg-surface border border-border rounded-2xl p-5 shadow-sm hover:border-blue/30 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 space-y-3 cursor-pointer group"
+      onClick={() => router.push(`/market/${market.id}`)}
+    >
+      <div className="flex items-start justify-between gap-2">
+        <h3 className="font-medium leading-snug">{market.title}</h3>
+        <Badge variant={statusBadge[market.status] ?? "gray"}>
+          {market.status}
+        </Badge>
       </div>
+      {market.status === "OPEN" && (
+        <p className="text-xs text-text-muted font-mono">
+          Ends in {formatTimeRemaining(market.end_date)}
+        </p>
+      )}
+      {market.status === "RESOLVED" && market.outcome && (
+        <p className="text-xs text-text-muted">
+          Resolved: <span className={market.outcome === "YES" ? "text-green" : "text-red"}>{market.outcome}</span>
+        </p>
+      )}
 
       {/* Ratio bar */}
       {hasVolume && (
@@ -98,6 +94,19 @@ export function MarketCard({ market }: { market: MarketResponse }) {
             </Button>
           </div>
         )}
+      </div>
+
+      <div className="flex items-center gap-1 text-xs text-text-muted group-hover:text-blue transition-colors duration-200 pt-0.5">
+        <span>View details</span>
+        <svg
+          className="w-3 h-3 translate-x-0 group-hover:translate-x-0.5 transition-transform duration-200"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
       </div>
     </div>
   );
