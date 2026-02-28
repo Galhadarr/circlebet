@@ -81,13 +81,27 @@ export default function CirclePage() {
                 <button
                   key={t}
                   onClick={() => setTab(t)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                  className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition ${
                     tab === t
                       ? "bg-surface text-text-primary shadow-sm"
                       : "text-text-muted hover:text-text-secondary"
                   }`}
                 >
-                  {t === "active" ? "Active" : "Resolved"}
+                  {t === "active" ? (
+                    <>
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                      Active
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      Resolved
+                    </>
+                  )}
                 </button>
               ))}
             </div>
