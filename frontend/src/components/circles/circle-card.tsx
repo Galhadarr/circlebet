@@ -19,7 +19,7 @@ export function CircleCard({ circle }: { circle: CircleResponse }) {
           <h3 className="font-semibold text-lg">{circle.name}</h3>
           <div className="flex items-center gap-1.5">
             <Badge variant="blue">{circle.member_count} members</Badge>
-            <Badge variant="gray">{circle.market_count} markets</Badge>
+            <Badge variant="purple">{circle.market_count} markets</Badge>
           </div>
         </div>
         {circle.description && (
