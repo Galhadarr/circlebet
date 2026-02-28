@@ -63,7 +63,18 @@ export default function MarketPage() {
       </Link>
 
       {/* Title + status hero */}
-      <div className="relative overflow-hidden bg-surface border border-border rounded-2xl p-8 shadow-sm">
+      <div className="relative overflow-hidden bg-surface border border-border rounded-2xl shadow-sm">
+        {market.image_url && (
+          <div className="w-full h-52 overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={market.image_url}
+              alt={market.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+        <div className="p-8">
         <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-blue/5 to-transparent rounded-bl-full pointer-events-none" />
         <div className="relative">
           <div className="flex items-start justify-between gap-3 mb-2">
@@ -101,6 +112,7 @@ export default function MarketPage() {
               </p>
             </div>
           </div>
+        </div>
         </div>
       </div>
 

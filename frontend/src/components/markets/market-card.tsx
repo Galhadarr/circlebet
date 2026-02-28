@@ -25,9 +25,20 @@ export function MarketCard({ market }: { market: MarketResponse }) {
 
   return (
     <div
-      className="bg-surface border border-border rounded-2xl p-5 shadow-sm hover:border-blue/30 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 space-y-3 cursor-pointer group"
+      className="bg-surface border border-border rounded-2xl overflow-hidden shadow-sm hover:border-blue/30 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
       onClick={() => router.push(`/market/${market.id}`)}
     >
+      {market.image_url && (
+        <div className="w-full h-32 overflow-hidden bg-bg-secondary">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={market.image_url}
+            alt={market.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      )}
+      <div className="p-5 space-y-3">
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-medium leading-snug">{market.title}</h3>
         <Badge variant={statusBadge[market.status] ?? "gray"}>
@@ -113,6 +124,7 @@ export function MarketCard({ market }: { market: MarketResponse }) {
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
         </svg>
+      </div>
       </div>
     </div>
   );

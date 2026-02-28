@@ -33,6 +33,7 @@ export interface MarketResponse {
   circle_id: string;
   title: string;
   description: string | null;
+  image_url: string | null;
   end_date: string;
   price_yes: string;
   price_no: string;
@@ -139,6 +140,7 @@ export interface MarketCreate {
   circle_id: string;
   title: string;
   description?: string | null;
+  image_url?: string | null;
   end_date: string;
 }
 

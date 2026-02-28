@@ -10,6 +10,7 @@ class MarketCreate(BaseModel):
     title: str
     description: str | None = None
     end_date: datetime
+    image_url: str | None = None
 
 
 class MarketResponse(BaseModel):
@@ -17,6 +18,7 @@ class MarketResponse(BaseModel):
     circle_id: uuid.UUID
     title: str
     description: str | None
+    image_url: str | None
     end_date: datetime
     price_yes: Decimal
     price_no: Decimal

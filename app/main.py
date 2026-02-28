@@ -1,11 +1,13 @@
 import asyncio
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.exceptions import CircleBetError, circlebet_error_handler
-from app.routes import auth, circles, leaderboard, markets, portfolio, trades
+from app.routes import auth, circles, leaderboard, markets, portfolio, trades, uploads
 from app.tasks.market_closer import close_expired_markets_loop
 
 
@@ -38,6 +40,11 @@ app.include_router(markets.router)
 app.include_router(trades.router)
 app.include_router(portfolio.router)
 app.include_router(leaderboard.router)
+app.include_router(uploads.router)
+
+uploads_dir = Path("uploads")
+uploads_dir.mkdir(exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=uploads_dir), name="uploads")
 
 
 @app.get("/health")
