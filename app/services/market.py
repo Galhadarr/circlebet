@@ -153,6 +153,21 @@ async def get_circle_markets(db: AsyncSession, circle_id: uuid.UUID) -> list[Mar
     ]
 
 
+async def update_market_image(
+    db: AsyncSession, user: User, market_id: uuid.UUID, image_url: str | None
+) -> MarketResponse:
+    market = await db.get(Market, market_id)
+    if not market:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Market not found")
+    if market.creator_id != user.id:
+        raise NotCircleAdmin()
+
+    market.image_url = image_url
+    await db.commit()
+    await db.refresh(market)
+    return _market_response(market)
+
+
 async def resolve_market(
     db: AsyncSession, user: User, market_id: uuid.UUID, outcome: str
 ) -> MarketResponse:

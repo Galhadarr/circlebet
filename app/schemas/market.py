@@ -39,5 +39,9 @@ class MarketDetailResponse(MarketResponse):
     no_bettors: int = 0
 
 
+class MarketImageUpdate(BaseModel):
+    image_url: str | None = None
+
+
 class ResolveRequest(BaseModel):
     outcome: str = Field(pattern="^(YES|NO)$")

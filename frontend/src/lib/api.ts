@@ -74,6 +74,11 @@ export const api = {
       method: "POST",
       body: body ? JSON.stringify(body) : undefined,
     }),
+  patch: <T>(path: string, body?: unknown) =>
+    request<T>(path, {
+      method: "PATCH",
+      body: body ? JSON.stringify(body) : undefined,
+    }),
   upload: <T>(path: string, file: File) => uploadFile<T>(path, file),
   baseUrl: BASE_URL,
 };
