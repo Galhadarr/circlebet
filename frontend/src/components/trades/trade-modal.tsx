@@ -72,12 +72,14 @@ export function TradeModal() {
             <button
               key={side}
               onClick={() => setSide(side)}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium transition ${
+              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all duration-150 active:scale-95 ${
                 selectedSide === side
                   ? side === "YES"
-                    ? "bg-green-dim text-green border border-green/30"
-                    : "bg-red-dim text-red border border-red/30"
-                  : "bg-bg-tertiary text-text-muted border border-border"
+                    ? "bg-green-dim text-green border border-green/60 shadow-sm shadow-green/25"
+                    : "bg-red-dim text-red border border-red/60 shadow-sm shadow-red/25"
+                  : side === "YES"
+                    ? "bg-bg-tertiary text-text-muted border border-border hover:bg-green/10 hover:text-green hover:border-green/30"
+                    : "bg-bg-tertiary text-text-muted border border-border hover:bg-red/10 hover:text-red hover:border-red/30"
               }`}
             >
               {side}

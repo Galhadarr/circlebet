@@ -12,11 +12,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles: Record<Variant, string> = {
-  primary: "bg-blue text-white hover:opacity-90",
-  secondary: "bg-bg-tertiary border border-border text-text-primary hover:bg-bg-hover",
-  green: "bg-green-dim text-green border border-green/30 hover:bg-green/20",
-  red: "bg-red-dim text-red border border-red/30 hover:bg-red/20",
-  ghost: "text-text-secondary hover:text-text-primary hover:bg-bg-tertiary",
+  primary: "bg-blue text-white hover:opacity-90 active:scale-95",
+  secondary: "bg-bg-tertiary border border-border text-text-primary hover:bg-bg-hover active:scale-95",
+  green: "bg-green-dim text-green border border-green/30 hover:bg-green/25 hover:border-green/60 hover:shadow-sm hover:shadow-green/25 active:scale-95",
+  red: "bg-red-dim text-red border border-red/30 hover:bg-red/25 hover:border-red/60 hover:shadow-sm hover:shadow-red/25 active:scale-95",
+  ghost: "text-text-secondary hover:text-text-primary hover:bg-bg-tertiary active:scale-95",
 };
 
 const sizeStyles: Record<Size, string> = {
@@ -30,7 +30,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        className={`inline-flex items-center justify-center rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+        className={`inline-flex items-center justify-center rounded-lg font-medium transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
         disabled={disabled || loading}
         {...props}
       >
