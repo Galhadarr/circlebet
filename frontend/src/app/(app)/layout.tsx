@@ -12,14 +12,24 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const token = useAuthStore((s) => s.token);
+  const hasHydrated = useAuthStore((s) => s._hasHydrated);
   const { isLoading } = useMe();
 
   useEffect(() => {
+    if (!hasHydrated) return;
     if (!token) {
       const loginUrl = pathname ? `/login?redirect=${encodeURIComponent(pathname)}` : "/login";
       router.replace(loginUrl);
     }
-  }, [token, router, pathname]);
+  }, [token, hasHydrated, router, pathname]);
+
+  if (!hasHydrated || (!token && isLoading)) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
 
   if (!token) return null;
 

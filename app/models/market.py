@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime
 from decimal import Decimal
 
-from sqlalchemy import DateTime, ForeignKey, Numeric, String, Text, func
+from sqlalchemy import DateTime, Enum as SAEnum, ForeignKey, Numeric, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -31,8 +31,15 @@ class Market(Base):
     q_yes: Mapped[Decimal] = mapped_column(Numeric(18, 8), default=Decimal("0"))
     q_no: Mapped[Decimal] = mapped_column(Numeric(18, 8), default=Decimal("0"))
     b: Mapped[Decimal] = mapped_column(Numeric(12, 4), default=Decimal("100"))
-    status: Mapped[MarketStatus] = mapped_column(String(10), default=MarketStatus.OPEN, index=True)
-    outcome: Mapped[MarketOutcome | None] = mapped_column(String(3), nullable=True)
+    status: Mapped[MarketStatus] = mapped_column(
+        SAEnum(MarketStatus, values_callable=lambda x: [e.value for e in x], native_enum=False),
+        default=MarketStatus.OPEN,
+        index=True,
+    )
+    outcome: Mapped[MarketOutcome | None] = mapped_column(
+        SAEnum(MarketOutcome, values_callable=lambda x: [e.value for e in x], native_enum=False),
+        nullable=True,
+    )
     creator_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
 

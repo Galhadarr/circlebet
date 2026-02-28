@@ -24,7 +24,7 @@ export function MarketCard({ market }: { market: MarketResponse }) {
   const hasVolume = totalVol > 0;
 
   return (
-    <div className="bg-surface border border-border rounded-2xl p-5 shadow-sm hover:border-blue/30 hover:shadow-md transition-all duration-200 space-y-3">
+    <div className="bg-surface border border-border rounded-2xl p-5 shadow-sm hover:border-blue/30 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 space-y-3">
       <div
         className="cursor-pointer"
         onClick={() => router.push(`/market/${market.id}`)}

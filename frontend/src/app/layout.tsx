@@ -16,6 +16,12 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export const metadata: Metadata = {
   title: "CircleBet",
   description: "Prediction markets for your circle of friends",
@@ -43,8 +49,11 @@ export const metadata: Metadata = {
     images: ["/og-image.png"],
   },
   icons: {
-    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
-    apple: "/icon.svg",
+    icon: [
+      { url: "/favicon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
   },
 };
 
@@ -58,7 +67,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=JSON.parse(localStorage.getItem("circlebet-theme")||"{}");if((t.state&&t.state.theme)||"dark")==="dark")document.documentElement.classList.add("dark")}catch(e){document.documentElement.classList.add("dark")}})()`,
+            __html: `(function(){try{var t=JSON.parse(localStorage.getItem("circlebet-theme")||"{}");if((t.state&&t.state.theme)==="light")document.documentElement.classList.add("light")}catch(e){}})()`,
           }}
         />
       </head>

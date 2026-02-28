@@ -7,6 +7,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const navTabs = [
+  { href: "/", label: "Home", exact: true, public: true },
   { href: "/dashboard", label: "Dashboard" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/docs", label: "Docs" },
@@ -35,10 +36,10 @@ export function Header() {
 
         {/* Center nav tabs — hidden on mobile (bottom-nav handles it) */}
         <nav className="hidden sm:flex items-center gap-1">
-          {navTabs.map(({ href, label }) => {
-            const isActive = pathname?.startsWith(href);
+          {navTabs.map(({ href, label, exact, public: isPublic }) => {
+            const isActive = exact ? pathname === href : pathname?.startsWith(href);
 
-            if (!isAuthenticated) {
+            if (!isAuthenticated && !isPublic) {
               return (
                 <Link
                   key={href}
