@@ -28,6 +28,7 @@ def _market_response(
         circle_id=market.circle_id,
         title=market.title,
         description=market.description,
+        image_url=market.image_url,
         end_date=market.end_date,
         price_yes=lmsr.price_yes(market.q_yes, market.q_no, market.b),
         price_no=lmsr.price_no(market.q_yes, market.q_no, market.b),
@@ -55,6 +56,7 @@ async def create_market(db: AsyncSession, user: User, req: MarketCreate) -> Mark
         circle_id=req.circle_id,
         title=req.title,
         description=req.description,
+        image_url=req.image_url,
         end_date=req.end_date,
         q_yes=Decimal("0"),
         q_no=Decimal("0"),
@@ -100,6 +102,7 @@ async def get_market(db: AsyncSession, market_id: uuid.UUID) -> MarketDetailResp
         circle_id=market.circle_id,
         title=market.title,
         description=market.description,
+        image_url=market.image_url,
         end_date=market.end_date,
         price_yes=lmsr.price_yes(market.q_yes, market.q_no, market.b),
         price_no=lmsr.price_no(market.q_yes, market.q_no, market.b),
@@ -148,6 +151,21 @@ async def get_circle_markets(db: AsyncSession, circle_id: uuid.UUID) -> list[Mar
         )
         for m in markets
     ]
+
+
+async def update_market_image(
+    db: AsyncSession, user: User, market_id: uuid.UUID, image_url: str | None
+) -> MarketResponse:
+    market = await db.get(Market, market_id)
+    if not market:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Market not found")
+    if market.creator_id != user.id:
+        raise NotCircleAdmin()
+
+    market.image_url = image_url
+    await db.commit()
+    await db.refresh(market)
+    return _market_response(market)
 
 
 async def resolve_market(

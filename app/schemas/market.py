@@ -7,9 +7,10 @@ from pydantic import BaseModel, Field
 
 class MarketCreate(BaseModel):
     circle_id: uuid.UUID
-    title: str
+    title: str = Field(min_length=5, max_length=50)
     description: str | None = None
     end_date: datetime
+    image_url: str | None = None
 
 
 class MarketResponse(BaseModel):
@@ -17,6 +18,7 @@ class MarketResponse(BaseModel):
     circle_id: uuid.UUID
     title: str
     description: str | None
+    image_url: str | None
     end_date: datetime
     price_yes: Decimal
     price_no: Decimal
@@ -35,6 +37,10 @@ class MarketDetailResponse(MarketResponse):
     b: Decimal
     yes_bettors: int = 0
     no_bettors: int = 0
+
+
+class MarketImageUpdate(BaseModel):
+    image_url: str | None = None
 
 
 class ResolveRequest(BaseModel):

@@ -6,8 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.auth.dependencies import get_current_user
 from app.database import get_db
 from app.models.user import User
-from app.schemas.circle import CircleCreate, CircleMemberResponse, CircleResponse
-from app.services.circle import create_circle, get_circle, get_circle_members, get_user_circles, join_circle
+from app.schemas.circle import CircleCreate, CircleIconUpdate, CircleMemberResponse, CircleResponse
+from app.services.circle import create_circle, get_circle, get_circle_members, get_user_circles, join_circle, update_circle_icon
 
 router = APIRouter(prefix="/circles", tags=["circles"])
 
@@ -45,6 +45,16 @@ async def join(
     db: AsyncSession = Depends(get_db),
 ):
     return await join_circle(db, user, invite_token)
+
+
+@router.patch("/{circle_id}/icon", response_model=CircleResponse)
+async def update_icon(
+    circle_id: uuid.UUID,
+    req: CircleIconUpdate,
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    return await update_circle_icon(db, user, circle_id, req.icon_url)
 
 
 @router.get("/{circle_id}/members", response_model=list[CircleMemberResponse])

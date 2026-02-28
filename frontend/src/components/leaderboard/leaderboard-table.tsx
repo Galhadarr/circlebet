@@ -3,6 +3,7 @@
 import type { LeaderboardEntry } from "@/lib/types";
 import { formatCurrency } from "@/lib/utils";
 import { useAuthStore } from "@/stores/auth-store";
+import { UserAvatar } from "@/components/ui/user-avatar";
 
 export function LeaderboardTable({ entries }: { entries: LeaderboardEntry[] }) {
   const userId = useAuthStore((s) => s.user?.id);
@@ -26,11 +27,14 @@ export function LeaderboardTable({ entries }: { entries: LeaderboardEntry[] }) {
               <td className="px-3 py-2 font-mono text-text-muted">
                 {entry.rank}
               </td>
-              <td className="px-3 py-2 font-medium">
-                {entry.display_name}
-                {entry.user_id === userId && (
-                  <span className="text-xs text-blue ml-1">(you)</span>
-                )}
+              <td className="px-3 py-2">
+                <div className="flex items-center gap-2">
+                  <UserAvatar name={entry.display_name} size="sm" />
+                  <span className="font-medium">{entry.display_name}</span>
+                  {entry.user_id === userId && (
+                    <span className="text-xs text-blue">(you)</span>
+                  )}
+                </div>
               </td>
               <td className="px-3 py-2 text-right font-mono">
                 ${formatCurrency(entry.balance)}

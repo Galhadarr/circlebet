@@ -1,5 +1,7 @@
 "use client";
 
+"use client";
+
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import type {
@@ -34,6 +36,18 @@ export function useCreateMarket() {
       queryClient.invalidateQueries({
         queryKey: ["markets", "circle", market.circle_id],
       });
+    },
+  });
+}
+
+export function useUpdateMarketImage() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ marketId, imageUrl }: { marketId: string; imageUrl: string | null }) =>
+      api.patch<MarketResponse>(`/markets/${marketId}/image`, { image_url: imageUrl }),
+    onSuccess: (market) => {
+      queryClient.invalidateQueries({ queryKey: ["markets", market.id] });
+      queryClient.invalidateQueries({ queryKey: ["markets", "circle", market.circle_id] });
     },
   });
 }

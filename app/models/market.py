@@ -40,6 +40,7 @@ class Market(Base):
         SAEnum(MarketOutcome, values_callable=lambda x: [e.value for e in x], native_enum=False),
         nullable=True,
     )
+    image_url: Mapped[str | None] = mapped_column(String(2048), nullable=True)
     creator_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
 

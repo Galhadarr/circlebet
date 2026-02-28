@@ -1,13 +1,13 @@
 import uuid
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 
 class RegisterRequest(BaseModel):
     email: str
     password: str
-    display_name: str
+    display_name: str = Field(min_length=3, max_length=15)
 
 
 class LoginRequest(BaseModel):

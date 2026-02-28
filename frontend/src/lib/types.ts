@@ -14,9 +14,11 @@ export interface CircleResponse {
   id: string;
   name: string;
   description: string | null;
+  icon_url: string | null;
   invite_token: string;
   creator_id: string;
   member_count: number;
+  market_count: number;
   created_at: string;
 }
 
@@ -32,6 +34,7 @@ export interface MarketResponse {
   circle_id: string;
   title: string;
   description: string | null;
+  image_url: string | null;
   end_date: string;
   price_yes: string;
   price_no: string;
@@ -132,12 +135,14 @@ export interface LoginRequest {
 export interface CircleCreate {
   name: string;
   description?: string | null;
+  icon_url?: string | null;
 }
 
 export interface MarketCreate {
   circle_id: string;
   title: string;
   description?: string | null;
+  image_url?: string | null;
   end_date: string;
 }
 

@@ -7,7 +7,7 @@ import { CreateCircleModal } from "@/components/circles/create-circle-modal";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 
-export default function DashboardPage() {
+export default function CirclesPage() {
   const { data: circles, isLoading } = useCircles();
   const [showCreate, setShowCreate] = useState(false);
 

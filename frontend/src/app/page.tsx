@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAuthStore } from "@/stores/auth-store";
 import { Header } from "@/components/layout/header";
+import { BottomNav } from "@/components/layout/bottom-nav";
 
 function MockMarketCard() {
   const yesPrice = 0.63;
@@ -128,7 +129,7 @@ export default function LandingPage() {
   const token = useAuthStore((s) => s.token);
 
   return (
-    <div className="min-h-screen overflow-hidden">
+    <div className="min-h-screen overflow-hidden pb-16 sm:pb-0">
       {/* Background pattern */}
       <div
         className="fixed inset-0 opacity-[0.03] pointer-events-none"
@@ -159,10 +160,10 @@ export default function LandingPage() {
             <div className="flex gap-4">
               {token ? (
                 <Link
-                  href="/dashboard"
+                  href="/circles"
                   className="px-7 py-3.5 bg-blue text-white rounded-xl font-semibold hover:opacity-90 transition shadow-lg shadow-blue/20"
                 >
-                  Go to Dashboard
+                  Go to Circles
                 </Link>
               ) : (
                 <>
@@ -270,10 +271,10 @@ export default function LandingPage() {
             Join CircleBet and start trading on the things that matter to you and your friends.
           </p>
           <Link
-            href={token ? "/dashboard" : "/register"}
+            href={token ? "/circles" : "/register"}
             className="inline-block px-8 py-4 bg-blue text-white rounded-xl font-semibold text-lg hover:opacity-90 transition shadow-lg shadow-blue/20"
           >
-            {token ? "Go to Dashboard" : "Create Your Account"}
+            {token ? "Go to Circles" : "Create Your Account"}
           </Link>
         </div>
       </section>
@@ -282,6 +283,8 @@ export default function LandingPage() {
       <footer className="relative z-10 text-center py-8 text-xs text-text-muted">
         &copy; {new Date().getFullYear()} CircleBet
       </footer>
+
+      <BottomNav />
     </div>
   );
 }
