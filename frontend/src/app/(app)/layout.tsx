@@ -9,6 +9,8 @@ import { Header } from "@/components/layout/header";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { Spinner } from "@/components/ui/spinner";
 
+const PUBLIC_PATHS = ["/docs"];
+
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -17,19 +19,21 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { isLoading } = useMe();
   const theme = useThemeStore((s) => s.theme);
 
+  const isPublic = PUBLIC_PATHS.some((p) => pathname?.startsWith(p));
+
   useEffect(() => {
     document.documentElement.classList.toggle("light", theme === "light");
   }, [theme]);
 
   useEffect(() => {
     if (!hasHydrated) return;
-    if (!token) {
+    if (!token && !isPublic) {
       const loginUrl = pathname ? `/login?redirect=${encodeURIComponent(pathname)}` : "/login";
       router.replace(loginUrl);
     }
-  }, [token, hasHydrated, router, pathname]);
+  }, [token, hasHydrated, router, pathname, isPublic]);
 
-  if (!hasHydrated || (!token && isLoading)) {
+  if (!hasHydrated || (!token && isLoading && !isPublic)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Spinner size="lg" />
@@ -37,7 +41,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (!token) return null;
+  if (!token && !isPublic) return null;
 
   if (isLoading) {
     return (
