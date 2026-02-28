@@ -61,6 +61,7 @@ export default function CirclePage() {
           <div className="flex items-center gap-3 mb-2">
             <h1 className="text-3xl font-bold tracking-tight">{circle.name}</h1>
             <Badge variant="blue">{circle.member_count} members</Badge>
+            <Badge variant="purple">{circle.market_count} markets</Badge>
           </div>
           {circle.description && (
             <p className="text-sm text-text-secondary max-w-lg">{circle.description}</p>
