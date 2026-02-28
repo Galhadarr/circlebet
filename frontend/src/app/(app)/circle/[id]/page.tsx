@@ -82,7 +82,7 @@ export default function CirclePage() {
       </Link>
 
       {/* Hero banner */}
-      <div className="relative overflow-hidden bg-surface border border-border rounded-2xl p-8 shadow-sm">
+      <div className="relative bg-surface border border-border rounded-2xl p-8 shadow-sm">
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-blue/5 to-transparent rounded-bl-full pointer-events-none" />
         <div className="relative">
           <div className="flex items-center gap-3 mb-2">
