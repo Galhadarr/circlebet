@@ -1,26 +1,7 @@
 @import "tailwindcss";
 
-/* Light mode (default) */
+/* Dark mode (default — prevents flash on refresh) */
 :root {
-  --color-bg-primary: #ffffff;
-  --color-bg-secondary: #f5f5f7;
-  --color-bg-tertiary: #ebebef;
-  --color-bg-hover: #e0e0e6;
-  --color-surface: #ffffff;
-  --color-border: #d1d1d9;
-  --color-text-primary: #1a1a1e;
-  --color-text-secondary: #6b6b7b;
-  --color-text-muted: #9898a6;
-  --color-green: #00c853;
-  --color-green-dim: #00c85322;
-  --color-red: #ff1744;
-  --color-red-dim: #ff174422;
-  --color-blue: #2979ff;
-  --color-blue-dim: #2979ff22;
-}
-
-/* Dark mode */
-.dark {
   --color-bg-primary: #0d0d0f;
   --color-bg-secondary: #16161a;
   --color-bg-tertiary: #1e1e24;
@@ -36,6 +17,25 @@
   --color-red-dim: #ff174433;
   --color-blue: #2979ff;
   --color-blue-dim: #2979ff33;
+}
+
+/* Light mode */
+.light {
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f5f5f7;
+  --color-bg-tertiary: #ebebef;
+  --color-bg-hover: #e0e0e6;
+  --color-surface: #ffffff;
+  --color-border: #d1d1d9;
+  --color-text-primary: #1a1a1e;
+  --color-text-secondary: #6b6b7b;
+  --color-text-muted: #9898a6;
+  --color-green: #00c853;
+  --color-green-dim: #00c85322;
+  --color-red: #ff1744;
+  --color-red-dim: #ff174422;
+  --color-blue: #2979ff;
+  --color-blue-dim: #2979ff22;
 }
 
 @theme inline {
