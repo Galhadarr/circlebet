@@ -71,10 +71,7 @@ export function Header() {
         {/* Right side */}
         <div className="flex items-center gap-3 shrink-0">
           {isAuthenticated ? (
-            <>
-              <ThemeToggle />
-              <ProfileDropdown />
-            </>
+            <ProfileDropdown />
           ) : (
             <>
               <ThemeToggle />
