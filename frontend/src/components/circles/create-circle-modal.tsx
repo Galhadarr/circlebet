@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Image from "next/image";
 import { Modal } from "@/components/ui/modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -98,12 +97,8 @@ export function CreateCircleModal({ isOpen, onClose }: Props) {
               className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-dashed border-border hover:border-blue/50 transition-colors bg-bg-tertiary flex items-center justify-center"
             >
               {iconPreview ? (
-                <Image
-                  src={iconPreview}
-                  alt="Circle icon preview"
-                  fill
-                  className="object-cover"
-                />
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={iconPreview} alt="Circle icon preview" className="w-full h-full object-cover" />
               ) : (
                 <svg className="w-7 h-7 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 21h18M6.75 6.75h.008v.008H6.75V6.75z" />

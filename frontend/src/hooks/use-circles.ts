@@ -43,6 +43,18 @@ export function useCreateCircle() {
   });
 }
 
+export function useUpdateCircleIcon() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ circleId, iconUrl }: { circleId: string; iconUrl: string | null }) =>
+      api.patch<CircleResponse>(`/circles/${circleId}/icon`, { icon_url: iconUrl }),
+    onSuccess: (circle) => {
+      queryClient.invalidateQueries({ queryKey: ["circles", circle.id] });
+      queryClient.invalidateQueries({ queryKey: ["circles"] });
+    },
+  });
+}
+
 export function useJoinCircle() {
   const queryClient = useQueryClient();
   return useMutation({

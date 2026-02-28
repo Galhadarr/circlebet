@@ -152,6 +152,44 @@ async def join_circle(db: AsyncSession, user: User, invite_token: str) -> Circle
     )
 
 
+async def update_circle_icon(
+    db: AsyncSession, user: User, circle_id: uuid.UUID, icon_url: str | None
+) -> CircleResponse:
+    circle = await db.get(Circle, circle_id)
+    if not circle:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Circle not found")
+    if circle.creator_id != user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only the circle creator can update the icon")
+
+    circle.icon_url = icon_url
+    await db.commit()
+    await db.refresh(circle)
+
+    counts_result = await db.execute(
+        select(
+            func.count(CircleMember.user_id.distinct()).label("member_count"),
+            func.count(Market.id.distinct()).label("market_count"),
+        )
+        .select_from(Circle)
+        .outerjoin(CircleMember, CircleMember.circle_id == circle_id)
+        .outerjoin(Market, Market.circle_id == circle_id)
+        .where(Circle.id == circle_id)
+    )
+    row = counts_result.one()
+
+    return CircleResponse(
+        id=circle.id,
+        name=circle.name,
+        description=circle.description,
+        icon_url=circle.icon_url,
+        invite_token=circle.invite_token,
+        creator_id=circle.creator_id,
+        member_count=row.member_count,
+        market_count=row.market_count,
+        created_at=circle.created_at,
+    )
+
+
 async def get_circle_members(db: AsyncSession, circle_id: uuid.UUID) -> list[CircleMember]:
     result = await db.execute(
         select(CircleMember)

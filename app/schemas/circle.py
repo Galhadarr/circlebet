@@ -23,6 +23,10 @@ class CircleResponse(BaseModel):
     created_at: datetime
 
 
+class CircleIconUpdate(BaseModel):
+    icon_url: str | None = None
+
+
 class CircleMemberResponse(BaseModel):
     user_id: uuid.UUID
     display_name: str
