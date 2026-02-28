@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/auth-store";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -26,9 +27,10 @@ export function Header() {
         {/* Logo */}
         <Link
           href="/"
-          className="text-xl font-bold tracking-tight shrink-0"
+          className="flex items-center gap-2 shrink-0"
         >
-          Circle<span className="text-blue">Bet</span>
+          <Image src="/icon.svg" alt="CircleBet" width={24} height={24} />
+          <span className="text-xl font-bold tracking-tight">CircleBet</span>
         </Link>
 
         {/* Center nav tabs — hidden on mobile (bottom-nav handles it) */}

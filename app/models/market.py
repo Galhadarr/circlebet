@@ -31,8 +31,8 @@ class Market(Base):
     q_yes: Mapped[Decimal] = mapped_column(Numeric(18, 8), default=Decimal("0"))
     q_no: Mapped[Decimal] = mapped_column(Numeric(18, 8), default=Decimal("0"))
     b: Mapped[Decimal] = mapped_column(Numeric(12, 4), default=Decimal("100"))
-    status: Mapped[MarketStatus] = mapped_column(default=MarketStatus.OPEN, index=True)
-    outcome: Mapped[MarketOutcome | None] = mapped_column(nullable=True)
+    status: Mapped[MarketStatus] = mapped_column(String(10), default=MarketStatus.OPEN, index=True)
+    outcome: Mapped[MarketOutcome | None] = mapped_column(String(3), nullable=True)
     creator_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
 

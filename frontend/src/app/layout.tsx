@@ -15,9 +15,37 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
+
 export const metadata: Metadata = {
   title: "CircleBet",
   description: "Prediction markets for your circle of friends",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+  ),
+  openGraph: {
+    title: "CircleBet",
+    description: "Prediction markets for your circle of friends",
+    siteName: "CircleBet",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "CircleBet",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CircleBet",
+    description: "Prediction markets for your circle of friends",
+    images: ["/og-image.png"],
+  },
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
