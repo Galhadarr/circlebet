@@ -20,7 +20,7 @@ export default function LoginPage() {
 function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/dashboard";
+  const redirect = searchParams.get("redirect") || "/circles";
   const login = useLogin();
   const googleAuth = useGoogleAuth();
   const [email, setEmail] = useState("");
@@ -34,7 +34,7 @@ function LoginContent() {
     );
   }
 
-  const registerHref = redirect !== "/dashboard"
+  const registerHref = redirect !== "/circles"
     ? `/register?redirect=${encodeURIComponent(redirect)}`
     : "/register";
 

@@ -23,7 +23,7 @@ export default function JoinPage() {
       },
       onError: (err) => {
         toast.error(err.message);
-        router.replace("/dashboard");
+        router.replace("/circles");
       },
     });
   }, [token, joinCircle, router]);

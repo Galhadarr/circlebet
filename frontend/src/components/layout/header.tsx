@@ -8,7 +8,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 
 const navTabs = [
   { href: "/", label: "Home", exact: true, public: true },
-  { href: "/dashboard", label: "Dashboard" },
+  { href: "/circles", label: "Circles" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/docs", label: "Docs" },
 ];

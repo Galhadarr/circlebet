@@ -160,10 +160,10 @@ export default function LandingPage() {
             <div className="flex gap-4">
               {token ? (
                 <Link
-                  href="/dashboard"
+                  href="/circles"
                   className="px-7 py-3.5 bg-blue text-white rounded-xl font-semibold hover:opacity-90 transition shadow-lg shadow-blue/20"
                 >
-                  Go to Dashboard
+                  Go to Circles
                 </Link>
               ) : (
                 <>
@@ -271,10 +271,10 @@ export default function LandingPage() {
             Join CircleBet and start trading on the things that matter to you and your friends.
           </p>
           <Link
-            href={token ? "/dashboard" : "/register"}
+            href={token ? "/circles" : "/register"}
             className="inline-block px-8 py-4 bg-blue text-white rounded-xl font-semibold text-lg hover:opacity-90 transition shadow-lg shadow-blue/20"
           >
-            {token ? "Go to Dashboard" : "Create Your Account"}
+            {token ? "Go to Circles" : "Create Your Account"}
           </Link>
         </div>
       </section>
