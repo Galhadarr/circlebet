@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAuthStore } from "@/stores/auth-store";
 import { Header } from "@/components/layout/header";
+import { BottomNav } from "@/components/layout/bottom-nav";
 
 function MockMarketCard() {
   const yesPrice = 0.63;
@@ -128,7 +129,7 @@ export default function LandingPage() {
   const token = useAuthStore((s) => s.token);
 
   return (
-    <div className="min-h-screen overflow-hidden">
+    <div className="min-h-screen overflow-hidden pb-16 sm:pb-0">
       {/* Background pattern */}
       <div
         className="fixed inset-0 opacity-[0.03] pointer-events-none"
@@ -282,6 +283,8 @@ export default function LandingPage() {
       <footer className="relative z-10 text-center py-8 text-xs text-text-muted">
         &copy; {new Date().getFullYear()} CircleBet
       </footer>
+
+      <BottomNav />
     </div>
   );
 }
