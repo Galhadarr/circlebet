@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
 import { formatPrice } from "@/lib/utils";
+import { MarketImageBanner } from "@/components/markets/market-image-banner";
 import toast from "react-hot-toast";
 
 export default function MarketPage() {
@@ -64,16 +65,12 @@ export default function MarketPage() {
 
       {/* Title + status hero */}
       <div className="relative overflow-hidden bg-surface border border-border rounded-2xl shadow-sm">
-        {market.image_url && (
-          <div className="w-full h-52 overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={market.image_url}
-              alt={market.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        )}
+        <MarketImageBanner
+          imageUrl={market.image_url}
+          title={market.title}
+          marketId={market.id}
+          className="h-52"
+        />
         <div className="p-8">
         <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-bl from-blue/5 to-transparent rounded-bl-full pointer-events-none" />
         <div className="relative">
