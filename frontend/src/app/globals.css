@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+/* Light mode (default) */
+:root {
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f5f5f7;
+  --color-bg-tertiary: #ebebef;
+  --color-bg-hover: #e0e0e6;
+  --color-surface: #ffffff;
+  --color-border: #d1d1d9;
+  --color-text-primary: #1a1a1e;
+  --color-text-secondary: #6b6b7b;
+  --color-text-muted: #9898a6;
+  --color-green: #00c853;
+  --color-green-dim: #00c85322;
+  --color-red: #ff1744;
+  --color-red-dim: #ff174422;
+  --color-blue: #2979ff;
+  --color-blue-dim: #2979ff22;
+}
+
+/* Dark mode */
+.dark {
+  --color-bg-primary: #0d0d0f;
+  --color-bg-secondary: #16161a;
+  --color-bg-tertiary: #1e1e24;
+  --color-bg-hover: #2a2a32;
+  --color-surface: #16161a;
+  --color-border: #2e2e38;
+  --color-text-primary: #f0f0f2;
+  --color-text-secondary: #9898a6;
+  --color-text-muted: #6b6b7b;
+  --color-green: #00c853;
+  --color-green-dim: #00c85333;
+  --color-red: #ff1744;
+  --color-red-dim: #ff174433;
+  --color-blue: #2979ff;
+  --color-blue-dim: #2979ff33;
+}
+
+@theme inline {
+  --color-bg-primary: var(--color-bg-primary);
+  --color-bg-secondary: var(--color-bg-secondary);
+  --color-bg-tertiary: var(--color-bg-tertiary);
+  --color-bg-hover: var(--color-bg-hover);
+  --color-surface: var(--color-surface);
+  --color-border: var(--color-border);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+  --color-green: var(--color-green);
+  --color-green-dim: var(--color-green-dim);
+  --color-red: var(--color-red);
+  --color-red-dim: var(--color-red-dim);
+  --color-blue: var(--color-blue);
+  --color-blue-dim: var(--color-blue-dim);
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+body {
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+/* Input autofill */
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px var(--color-bg-tertiary) inset !important;
+  -webkit-text-fill-color: var(--color-text-primary) !important;
+}
+
+/* Animations */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.2s ease-out;
+}
+
+/* Fade in up */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out both;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Skeleton loading */
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--color-bg-tertiary) 0%, var(--color-bg-hover) 50%, var(--color-bg-tertiary) 100%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.5rem;
+}
