@@ -16,6 +16,12 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export const metadata: Metadata = {
   title: "CircleBet",
   description: "Prediction markets for your circle of friends",
