@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime
 from decimal import Decimal
 
-from sqlalchemy import ForeignKey, Numeric, func
+from sqlalchemy import Enum as SAEnum, ForeignKey, Numeric, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -25,8 +25,14 @@ class Trade(Base):
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False, index=True)
     market_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("markets.id"), nullable=False, index=True)
-    side: Mapped[TradeSide] = mapped_column(nullable=False)
-    direction: Mapped[TradeDirection] = mapped_column(nullable=False)
+    side: Mapped[TradeSide] = mapped_column(
+        SAEnum(TradeSide, values_callable=lambda x: [e.value for e in x], native_enum=False),
+        nullable=False,
+    )
+    direction: Mapped[TradeDirection] = mapped_column(
+        SAEnum(TradeDirection, values_callable=lambda x: [e.value for e in x], native_enum=False),
+        nullable=False,
+    )
     amount: Mapped[Decimal] = mapped_column(Numeric(12, 4), nullable=False)
     shares: Mapped[Decimal] = mapped_column(Numeric(18, 8), nullable=False)
     price_at_trade: Mapped[Decimal] = mapped_column(Numeric(10, 8), nullable=False)
