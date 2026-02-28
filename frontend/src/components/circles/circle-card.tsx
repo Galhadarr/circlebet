@@ -17,7 +17,10 @@ export function CircleCard({ circle }: { circle: CircleResponse }) {
       <div className="relative">
         <div className="flex items-start justify-between mb-2">
           <h3 className="font-semibold text-lg">{circle.name}</h3>
-          <Badge variant="blue">{circle.member_count} members</Badge>
+          <div className="flex items-center gap-1.5">
+            <Badge variant="blue">{circle.member_count} members</Badge>
+            <Badge variant="gray">{circle.market_count} markets</Badge>
+          </div>
         </div>
         {circle.description && (
           <p className="text-sm text-text-secondary line-clamp-2 mb-3">

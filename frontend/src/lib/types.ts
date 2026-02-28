@@ -17,6 +17,7 @@ export interface CircleResponse {
   invite_token: string;
   creator_id: string;
   member_count: number;
+  market_count: number;
   created_at: string;
 }
 

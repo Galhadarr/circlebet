@@ -17,6 +17,7 @@ class CircleResponse(BaseModel):
     invite_token: str
     creator_id: uuid.UUID
     member_count: int
+    market_count: int = 0
     created_at: datetime
 
 
