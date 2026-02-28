@@ -8,12 +8,14 @@ from pydantic import BaseModel, Field
 class CircleCreate(BaseModel):
     name: str = Field(min_length=3, max_length=20)
     description: str | None = None
+    icon_url: str | None = None
 
 
 class CircleResponse(BaseModel):
     id: uuid.UUID
     name: str
     description: str | None
+    icon_url: str | None = None
     invite_token: str
     creator_id: uuid.UUID
     member_count: int

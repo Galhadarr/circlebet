@@ -14,6 +14,7 @@ export interface CircleResponse {
   id: string;
   name: string;
   description: string | null;
+  icon_url: string | null;
   invite_token: string;
   creator_id: string;
   member_count: number;
@@ -134,6 +135,7 @@ export interface LoginRequest {
 export interface CircleCreate {
   name: string;
   description?: string | null;
+  icon_url?: string | null;
 }
 
 export interface MarketCreate {

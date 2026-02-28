@@ -13,6 +13,7 @@ class Circle(Base):
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     name: Mapped[str] = mapped_column(String(200), nullable=False)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    icon_url: Mapped[str | None] = mapped_column(String(2048), nullable=True)
     invite_token: Mapped[str] = mapped_column(String(64), unique=True, nullable=False, index=True)
     creator_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())
