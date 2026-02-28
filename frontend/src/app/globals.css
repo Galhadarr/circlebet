@@ -98,6 +98,22 @@ input:-webkit-autofill {
   animation: slide-up 0.2s ease-out;
 }
 
+/* Dropdown fade in */
+@keyframes fade-in-dropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-fade-in-dropdown {
+  animation: fade-in-dropdown 0.12s ease-out both;
+}
+
 /* Fade in up */
 @keyframes fade-in-up {
   from {
