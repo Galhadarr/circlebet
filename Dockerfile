@@ -2,6 +2,8 @@ FROM python:3.12-slim
 
 WORKDIR /code
 
+ENV PYTHONPATH=/code
+
 COPY pyproject.toml .
 RUN pip install --no-cache-dir .
 
