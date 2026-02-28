@@ -46,21 +46,25 @@ export function MarketCard({ market }: { market: MarketResponse }) {
       )}
 
       {/* Ratio bar */}
-      {hasVolume && (
-        <div className="flex h-2 rounded-full overflow-hidden">
-          <div
-            className="bg-green transition-all duration-300"
-            style={{ width: `${yesPct}%` }}
-          />
-          <div
-            className="bg-red transition-all duration-300"
-            style={{ width: `${100 - yesPct}%` }}
-          />
-        </div>
-      )}
+      <div className="flex h-2 rounded-full overflow-hidden">
+        {hasVolume ? (
+          <>
+            <div
+              className="bg-green transition-all duration-300"
+              style={{ width: `${yesPct}%` }}
+            />
+            <div
+              className="bg-red transition-all duration-300"
+              style={{ width: `${100 - yesPct}%` }}
+            />
+          </>
+        ) : (
+          <div className="w-full bg-border rounded-full" />
+        )}
+      </div>
 
-      <div className="flex items-center gap-2">
-        <div className="flex-1 flex gap-3">
+      <div className="flex flex-col gap-2">
+        <div className="flex gap-3">
           <span className="text-sm font-mono">
             <span className="text-green font-medium">YES {formatPrice(market.price_yes)}</span>
             <span className="text-text-muted text-xs ml-1">({formatMultiplier(market.price_yes)})</span>
@@ -75,6 +79,7 @@ export function MarketCard({ market }: { market: MarketResponse }) {
             <Button
               variant="green"
               size="sm"
+              className="flex-1"
               onClick={(e) => {
                 e.stopPropagation();
                 openModal(market.id, "YES");
@@ -85,6 +90,7 @@ export function MarketCard({ market }: { market: MarketResponse }) {
             <Button
               variant="red"
               size="sm"
+              className="flex-1"
               onClick={(e) => {
                 e.stopPropagation();
                 openModal(market.id, "NO");

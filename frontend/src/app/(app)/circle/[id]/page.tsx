@@ -101,7 +101,7 @@ export default function CirclePage() {
               <Spinner />
             </div>
           ) : displayed.length > 0 ? (
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {displayed.map((market, i) => (
                 <div
                   key={market.id}
