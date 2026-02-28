@@ -15,6 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
+
 export const metadata: Metadata = {
   title: "CircleBet",
   description: "Prediction markets for your circle of friends",
