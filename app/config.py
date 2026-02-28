@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     INITIAL_BALANCE: Decimal = Decimal("10000.00")
     DEFAULT_LIQUIDITY_B: Decimal = Decimal("100")
     MARKET_CLOSE_INTERVAL_SECONDS: int = 60
+    GOOGLE_CLIENT_ID: str = ""
 
     model_config = {"env_file": ".env", "extra": "ignore"}
 

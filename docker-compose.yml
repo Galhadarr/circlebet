@@ -22,11 +22,24 @@ services:
       - "8000:8000"
     env_file:
       - .env
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://circlebet:circlebet@db:5432/circlebet
     depends_on:
       db:
         condition: service_healthy
     volumes:
       - .:/code
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - app
+    volumes:
+      - ./frontend/src:/app/src
 
 volumes:
   pgdata:

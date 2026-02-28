@@ -12,13 +12,17 @@ from app.models.circle import Circle
 from app.models.circle_member import CircleMember
 from app.models.holding import Holding
 from app.models.market import Market, MarketOutcome, MarketStatus
-from app.models.trade import Trade
+from app.models.trade import Trade, TradeDirection, TradeSide
 from app.models.user import User
 from app.schemas.market import MarketCreate, MarketDetailResponse, MarketResponse
 from app.services import lmsr
 
 
-def _market_response(market: Market) -> MarketResponse:
+def _market_response(
+    market: Market,
+    yes_volume: Decimal = Decimal("0"),
+    no_volume: Decimal = Decimal("0"),
+) -> MarketResponse:
     return MarketResponse(
         id=market.id,
         circle_id=market.circle_id,
@@ -31,6 +35,8 @@ def _market_response(market: Market) -> MarketResponse:
         outcome=market.outcome.value if market.outcome else None,
         creator_id=market.creator_id,
         created_at=market.created_at,
+        yes_volume=yes_volume,
+        no_volume=no_volume,
     )
 
 
@@ -71,6 +77,24 @@ async def get_market(db: AsyncSession, market_id: uuid.UUID) -> MarketDetailResp
     )
     total_volume = volume_result.scalar_one()
 
+    # Per-side volumes and unique bettor counts (BUY trades only)
+    side_stats_result = await db.execute(
+        select(
+            Trade.side,
+            func.coalesce(func.sum(Trade.amount), 0).label("volume"),
+            func.count(func.distinct(Trade.user_id)).label("bettors"),
+        )
+        .where(Trade.market_id == market_id, Trade.direction == TradeDirection.BUY)
+        .group_by(Trade.side)
+    )
+    side_stats = {row.side: row for row in side_stats_result.all()}
+    yes_stats = side_stats.get(TradeSide.YES)
+    no_stats = side_stats.get(TradeSide.NO)
+    yes_volume = Decimal(str(yes_stats.volume)) if yes_stats else Decimal("0")
+    no_volume = Decimal(str(no_stats.volume)) if no_stats else Decimal("0")
+    yes_bettors = yes_stats.bettors if yes_stats else 0
+    no_bettors = no_stats.bettors if no_stats else 0
+
     return MarketDetailResponse(
         id=market.id,
         circle_id=market.circle_id,
@@ -87,6 +111,10 @@ async def get_market(db: AsyncSession, market_id: uuid.UUID) -> MarketDetailResp
         q_yes=market.q_yes,
         q_no=market.q_no,
         b=market.b,
+        yes_volume=yes_volume,
+        no_volume=no_volume,
+        yes_bettors=yes_bettors,
+        no_bettors=no_bettors,
     )
 
 
@@ -94,7 +122,32 @@ async def get_circle_markets(db: AsyncSession, circle_id: uuid.UUID) -> list[Mar
     result = await db.execute(
         select(Market).where(Market.circle_id == circle_id).order_by(Market.created_at.desc())
     )
-    return [_market_response(m) for m in result.scalars().all()]
+    markets = result.scalars().all()
+    market_ids = [m.id for m in markets]
+
+    # Batch query per-side volumes for all markets (BUY trades only)
+    volume_map: dict[tuple, Decimal] = {}
+    if market_ids:
+        vol_result = await db.execute(
+            select(
+                Trade.market_id,
+                Trade.side,
+                func.coalesce(func.sum(Trade.amount), 0).label("volume"),
+            )
+            .where(Trade.market_id.in_(market_ids), Trade.direction == TradeDirection.BUY)
+            .group_by(Trade.market_id, Trade.side)
+        )
+        for row in vol_result.all():
+            volume_map[(row.market_id, row.side)] = Decimal(str(row.volume))
+
+    return [
+        _market_response(
+            m,
+            yes_volume=volume_map.get((m.id, TradeSide.YES), Decimal("0")),
+            no_volume=volume_map.get((m.id, TradeSide.NO), Decimal("0")),
+        )
+        for m in markets
+    ]
 
 
 async def resolve_market(

@@ -24,6 +24,8 @@ class MarketResponse(BaseModel):
     outcome: str | None
     creator_id: uuid.UUID
     created_at: datetime
+    yes_volume: Decimal = Decimal("0")
+    no_volume: Decimal = Decimal("0")
 
 
 class MarketDetailResponse(MarketResponse):
@@ -31,6 +33,8 @@ class MarketDetailResponse(MarketResponse):
     q_yes: Decimal
     q_no: Decimal
     b: Decimal
+    yes_bettors: int = 0
+    no_bettors: int = 0
 
 
 class ResolveRequest(BaseModel):
