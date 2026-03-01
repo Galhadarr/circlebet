@@ -14,6 +14,7 @@ import { TradeModal } from "@/components/trades/trade-modal";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
+import { Modal } from "@/components/ui/modal";
 import { formatPrice } from "@/lib/utils";
 import { MarketImageBanner } from "@/components/markets/market-image-banner";
 import { api } from "@/lib/api";
@@ -33,6 +34,7 @@ export default function MarketPage() {
   const deleteMarket = useDeleteMarket();
   const [menuOpen, setMenuOpen] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   if (isLoading) {
@@ -79,7 +81,6 @@ export default function MarketPage() {
 
   function handleDelete() {
     if (!market) return;
-    if (!confirm(`Delete "${market.title}"? This cannot be undone.`)) return;
     deleteMarket.mutate(
       { marketId: id, circleId: market.circle_id },
       {
@@ -87,7 +88,10 @@ export default function MarketPage() {
           toast.success("Market deleted");
           router.push(`/circle/${market.circle_id}`);
         },
-        onError: (err) => toast.error(err.message),
+        onError: (err) => {
+          toast.error(err.message);
+          setDeleteModalOpen(false);
+        },
       }
     );
   }
@@ -269,13 +273,45 @@ export default function MarketPage() {
           <p className="text-sm font-medium text-red">Admin actions</p>
           <Button
             variant="red"
-            onClick={handleDelete}
-            loading={deleteMarket.isPending}
+            onClick={() => setDeleteModalOpen(true)}
           >
             Delete market
           </Button>
         </div>
       )}
+
+      {/* Delete confirmation modal */}
+      <Modal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        title="Delete market"
+      >
+        <div className="space-y-5 pb-2">
+          <p className="text-sm text-text-secondary">
+            Are you sure you want to delete{" "}
+            <span className="font-semibold text-text-primary">{market.title}</span>?
+            This will permanently remove all trades and holdings. This cannot be undone.
+          </p>
+          <div className="flex gap-3">
+            <Button
+              variant="ghost"
+              className="flex-1"
+              onClick={() => setDeleteModalOpen(false)}
+              disabled={deleteMarket.isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="red"
+              className="flex-1"
+              onClick={handleDelete}
+              loading={deleteMarket.isPending}
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
+      </Modal>
 
       {/* Stats */}
       <MarketStats market={market} />

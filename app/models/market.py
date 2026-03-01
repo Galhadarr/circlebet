@@ -46,5 +46,5 @@ class Market(Base):
 
     circle: Mapped["Circle"] = relationship(back_populates="markets")
     creator: Mapped["User"] = relationship()
-    holdings: Mapped[list["Holding"]] = relationship(back_populates="market")
-    trades: Mapped[list["Trade"]] = relationship(back_populates="market")
+    holdings: Mapped[list["Holding"]] = relationship(back_populates="market", cascade="all, delete-orphan")
+    trades: Mapped[list["Trade"]] = relationship(back_populates="market", cascade="all, delete-orphan")
