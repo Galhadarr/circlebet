@@ -43,6 +43,7 @@ async function request<T>(
     );
   }
 
+  if (res.status === 204) return undefined as T;
   return res.json();
 }
 
@@ -79,6 +80,7 @@ export const api = {
       method: "PATCH",
       body: body ? JSON.stringify(body) : undefined,
     }),
+  delete: <T = void>(path: string) => request<T>(path, { method: "DELETE" }),
   upload: <T>(path: string, file: File) => uploadFile<T>(path, file),
   baseUrl: BASE_URL,
 };

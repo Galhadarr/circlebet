@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { useMarket, useResolveMarket, useUpdateMarketImage } from "@/hooks/use-markets";
+import { useMarket, useResolveMarket, useUpdateMarketImage, useDeleteMarket } from "@/hooks/use-markets";
 import { useTradeHistory } from "@/hooks/use-trades";
 import { useAuthStore } from "@/stores/auth-store";
 import { useTradeModalStore } from "@/stores/trade-modal-store";
@@ -21,12 +21,16 @@ import toast from "react-hot-toast";
 
 export default function MarketPage() {
   const { id } = useParams<{ id: string }>();
+  const router = useRouter();
   const { data: market, isLoading } = useMarket(id);
   const { data: trades } = useTradeHistory(id);
-  const userId = useAuthStore((s) => s.user?.id);
+  const user = useAuthStore((s) => s.user);
+  const userId = user?.id;
+  const isAdmin = user?.is_admin ?? false;
   const openModal = useTradeModalStore((s) => s.openModal);
   const resolveMarket = useResolveMarket();
   const updateImage = useUpdateMarketImage();
+  const deleteMarket = useDeleteMarket();
   const [menuOpen, setMenuOpen] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -68,6 +72,21 @@ export default function MarketPage() {
       { marketId: id, outcome },
       {
         onSuccess: () => toast.success(`Market resolved: ${outcome}`),
+        onError: (err) => toast.error(err.message),
+      }
+    );
+  }
+
+  function handleDelete() {
+    if (!market) return;
+    if (!confirm(`Delete "${market.title}"? This cannot be undone.`)) return;
+    deleteMarket.mutate(
+      { marketId: id, circleId: market.circle_id },
+      {
+        onSuccess: () => {
+          toast.success("Market deleted");
+          router.push(`/circle/${market.circle_id}`);
+        },
         onError: (err) => toast.error(err.message),
       }
     );
@@ -241,6 +260,20 @@ export default function MarketPage() {
               Resolve NO
             </Button>
           </div>
+        </div>
+      )}
+
+      {/* Admin: delete market */}
+      {isAdmin && (
+        <div className="bg-surface border border-red/20 rounded-2xl p-5 shadow-sm space-y-3">
+          <p className="text-sm font-medium text-red">Admin actions</p>
+          <Button
+            variant="red"
+            onClick={handleDelete}
+            loading={deleteMarket.isPending}
+          >
+            Delete market
+          </Button>
         </div>
       )}
 

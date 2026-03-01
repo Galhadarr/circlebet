@@ -71,3 +71,15 @@ export function useResolveMarket() {
     },
   });
 }
+
+export function useDeleteMarket() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ marketId, circleId }: { marketId: string; circleId: string }) =>
+      api.delete(`/markets/${marketId}`).then(() => ({ marketId, circleId })),
+    onSuccess: ({ marketId, circleId }) => {
+      queryClient.removeQueries({ queryKey: ["markets", marketId] });
+      queryClient.invalidateQueries({ queryKey: ["markets", "circle", circleId] });
+    },
+  });
+}
