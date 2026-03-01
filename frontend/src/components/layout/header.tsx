@@ -64,7 +64,7 @@ export function Header() {
           href="/"
           className="flex items-center gap-2.5 shrink-0"
         >
-          <Image src="/icon.svg" alt="CircleBet" width={30} height={30} />
+          <Image src="/icon.svg" alt="CircleBet" width={40} height={40} />
           <span className="text-2xl font-bold tracking-tight">CircleBet</span>
         </Link>
 

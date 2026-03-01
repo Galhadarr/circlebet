@@ -29,6 +29,7 @@ services:
         condition: service_healthy
     volumes:
       - .:/code
+      - uploads_data:/code/uploads
 
   frontend:
     build:
@@ -48,3 +49,4 @@ services:
 
 volumes:
   pgdata:
+  uploads_data:
