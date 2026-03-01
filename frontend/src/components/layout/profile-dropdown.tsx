@@ -15,6 +15,10 @@ export function ProfileDropdown() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    document.documentElement.classList.toggle("light", theme === "light");
+  }, [theme]);
+
+  useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false);
