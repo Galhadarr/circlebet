@@ -30,7 +30,7 @@ class Market(Base):
     end_date: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     q_yes: Mapped[Decimal] = mapped_column(Numeric(18, 8), default=Decimal("0"))
     q_no: Mapped[Decimal] = mapped_column(Numeric(18, 8), default=Decimal("0"))
-    b: Mapped[Decimal] = mapped_column(Numeric(12, 4), default=Decimal("100"))
+    b: Mapped[Decimal] = mapped_column(Numeric(12, 4), default=Decimal("1000"))
     status: Mapped[MarketStatus] = mapped_column(
         SAEnum(MarketStatus, values_callable=lambda x: [e.value for e in x], native_enum=False),
         default=MarketStatus.OPEN,
