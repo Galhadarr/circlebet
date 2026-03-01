@@ -211,6 +211,14 @@ async def resolve_market(
     return _market_response(market)
 
 
+async def delete_market(db: AsyncSession, market_id: uuid.UUID) -> None:
+    market = await db.get(Market, market_id)
+    if not market:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Market not found")
+    await db.delete(market)
+    await db.commit()
+
+
 async def close_expired_markets(db: AsyncSession) -> int:
     now = datetime.now(timezone.utc)
     result = await db.execute(

@@ -3,11 +3,11 @@ import uuid
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.auth.dependencies import get_current_user
+from app.auth.dependencies import get_current_user, require_admin
 from app.database import get_db
 from app.models.user import User
 from app.schemas.market import MarketCreate, MarketDetailResponse, MarketImageUpdate, MarketResponse, ResolveRequest
-from app.services.market import create_market, get_circle_markets, get_market, resolve_market, update_market_image
+from app.services.market import create_market, delete_market, get_circle_markets, get_market, resolve_market, update_market_image
 
 router = APIRouter(prefix="/markets", tags=["markets"])
 
@@ -57,3 +57,12 @@ async def resolve(
     db: AsyncSession = Depends(get_db),
 ):
     return await resolve_market(db, user, market_id, req.outcome)
+
+
+@router.delete("/{market_id}", status_code=204)
+async def delete(
+    market_id: uuid.UUID,
+    user: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    await delete_market(db, market_id)
