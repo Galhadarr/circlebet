@@ -13,6 +13,11 @@ class Settings(BaseSettings):
     MARKET_CLOSE_INTERVAL_SECONDS: int = 60
     GOOGLE_CLIENT_ID: str = ""
 
+    AWS_ACCESS_KEY_ID: str = ""
+    AWS_SECRET_ACCESS_KEY: str = ""
+    AWS_S3_BUCKET_NAME: str = ""
+    AWS_S3_REGION: str = "us-east-1"
+
     model_config = {"env_file": ".env", "extra": "ignore"}
 
 
