@@ -1,18 +1,26 @@
 import uuid
-from pathlib import Path
 
+import boto3
+from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, status
 
 from app.auth.dependencies import get_current_user
+from app.config import settings
 from app.models.user import User
-
-UPLOAD_DIR = Path("uploads")
-UPLOAD_DIR.mkdir(exist_ok=True)
 
 ALLOWED_CONTENT_TYPES = {"image/jpeg", "image/png", "image/gif", "image/webp"}
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 
 router = APIRouter(prefix="/uploads", tags=["uploads"])
+
+
+def _s3_client():
+    return boto3.client(
+        "s3",
+        region_name=settings.AWS_S3_REGION,
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+    )
 
 
 @router.post("/image")
@@ -37,8 +45,21 @@ async def upload_image(
     if ext not in ("jpg", "jpeg", "png", "gif", "webp"):
         ext = "jpg"
 
-    filename = f"{uuid.uuid4()}.{ext}"
-    dest = UPLOAD_DIR / filename
-    dest.write_bytes(data)
+    key = f"uploads/{uuid.uuid4()}.{ext}"
 
-    return {"url": f"/uploads/{filename}"}
+    try:
+        s3 = _s3_client()
+        s3.put_object(
+            Bucket=settings.AWS_S3_BUCKET_NAME,
+            Key=key,
+            Body=data,
+            ContentType=file.content_type,
+        )
+    except (BotoCoreError, ClientError) as e:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"Failed to upload image: {e}",
+        )
+
+    url = f"https://{settings.AWS_S3_BUCKET_NAME}.s3.{settings.AWS_S3_REGION}.amazonaws.com/{key}"
+    return {"url": url}

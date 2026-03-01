@@ -9,9 +9,14 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
     ALLOW_SELL: bool = True
     INITIAL_BALANCE: Decimal = Decimal("10000.00")
-    DEFAULT_LIQUIDITY_B: Decimal = Decimal("100")
+    DEFAULT_LIQUIDITY_B: Decimal = Decimal("1000")
     MARKET_CLOSE_INTERVAL_SECONDS: int = 60
     GOOGLE_CLIENT_ID: str = ""
+
+    AWS_ACCESS_KEY_ID: str = ""
+    AWS_SECRET_ACCESS_KEY: str = ""
+    AWS_S3_BUCKET_NAME: str = ""
+    AWS_S3_REGION: str = "us-east-1"
 
     model_config = {"env_file": ".env", "extra": "ignore"}
 

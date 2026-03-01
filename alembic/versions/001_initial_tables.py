@@ -61,7 +61,7 @@ def upgrade() -> None:
         sa.Column("end_date", sa.DateTime(timezone=True), nullable=False),
         sa.Column("q_yes", sa.Numeric(18, 8), nullable=False, server_default="0"),
         sa.Column("q_no", sa.Numeric(18, 8), nullable=False, server_default="0"),
-        sa.Column("b", sa.Numeric(12, 4), nullable=False, server_default="100"),
+        sa.Column("b", sa.Numeric(12, 4), nullable=False, server_default="1000"),
         sa.Column("status", sa.String(10), nullable=False, server_default="OPEN"),
         sa.Column("outcome", sa.String(3), nullable=True),
         sa.Column("creator_id", sa.Uuid(), nullable=False),
