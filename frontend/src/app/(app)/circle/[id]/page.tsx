@@ -52,7 +52,7 @@ export default function CirclePage() {
     setUploadingIcon(true);
     try {
       const { url } = await api.upload<{ url: string }>("/uploads/image", file);
-      await updateIcon.mutateAsync({ circleId: id, iconUrl: `${api.baseUrl}${url}` });
+      await updateIcon.mutateAsync({ circleId: id, iconUrl: url });
       toast.success("Icon updated!");
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : "Failed to update icon.");

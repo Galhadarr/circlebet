@@ -59,7 +59,7 @@ export default function MarketPage() {
     setUploadingImage(true);
     try {
       const { url } = await api.upload<{ url: string }>("/uploads/image", file);
-      await updateImage.mutateAsync({ marketId: id, imageUrl: `${api.baseUrl}${url}` });
+      await updateImage.mutateAsync({ marketId: id, imageUrl: url });
       toast.success("Image updated!");
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : "Failed to update image.");

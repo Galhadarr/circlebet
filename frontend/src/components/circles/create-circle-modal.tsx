@@ -38,7 +38,7 @@ export function CreateCircleModal({ isOpen, onClose }: Props) {
     setUploading(true);
     try {
       const res = await api.upload<{ url: string }>("/uploads/image", file);
-      setIconUrl(`${api.baseUrl}${res.url}`);
+      setIconUrl(res.url);
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : "Image upload failed.");
       setIconPreview(null);
