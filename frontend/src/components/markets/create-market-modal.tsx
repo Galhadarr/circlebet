@@ -34,7 +34,7 @@ export function CreateMarketModal({ circleId, isOpen, onClose }: Props) {
     setUploading(true);
     try {
       const res = await api.upload<{ url: string }>("/uploads/image", file);
-      setImageUrl(`${api.baseUrl}${res.url}`);
+      setImageUrl(res.url);
     } catch (err: unknown) {
       toast.error(err instanceof Error ? err.message : "Image upload failed.");
       setImagePreview(null);
