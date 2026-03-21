@@ -5,6 +5,29 @@ import { useAuthStore } from "@/stores/auth-store";
 import { Header } from "@/components/layout/header";
 import { BottomNav } from "@/components/layout/bottom-nav";
 
+const leaderboard = [
+  { rank: 1, name: "WhiteFox", score: 8, medal: "🥇" },
+  { rank: 2, name: "SilverBird", score: 5, medal: "🥈" },
+  { rank: 3, name: "PurpleDragon", score: 3, medal: "🥉" },
+];
+
+function MockLeaderboardCard() {
+  return (
+    <div className="w-44 bg-surface border border-border rounded-2xl shadow-xl p-3 space-y-2">
+      <p className="text-xs font-semibold text-text-primary">Scoreboard</p>
+      {leaderboard.map((entry) => (
+        <div key={entry.rank} className="flex items-center justify-between text-xs">
+          <div className="flex items-center gap-1.5">
+            <span>{entry.medal}</span>
+            <span className="text-text-secondary">{entry.name}</span>
+          </div>
+          <span className="font-mono font-medium text-text-primary">{entry.score} pts</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function MockBetCard() {
   return (
     <div className="w-full max-w-sm bg-surface border border-border rounded-2xl overflow-hidden shadow-lg">
@@ -165,7 +188,12 @@ export default function LandingPage() {
             className="flex justify-center animate-fade-in-up"
             style={{ "--delay": "0.15s" } as React.CSSProperties}
           >
-            <MockBetCard />
+            <div className="relative">
+              <MockBetCard />
+              <div className="absolute -top-4 -right-10 rotate-2">
+                <MockLeaderboardCard />
+              </div>
+            </div>
           </div>
         </div>
       </section>
