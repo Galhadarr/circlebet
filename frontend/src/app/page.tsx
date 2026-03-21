@@ -79,7 +79,7 @@ const features = [
       </svg>
     ),
     title: "Create bets",
-    desc: "Write the question, add 2–5 options, optional banner, and invite your circle to bet on it.",
+    desc: "Write the question, add 2–5 options, and invite your circle to bet on it.",
   },
   {
     icon: (
@@ -94,13 +94,12 @@ const features = [
   {
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C7 4 9 7 12 7s5-3 7.5-3a2.5 2.5 0 0 1 0 5H18" />
-        <path d="M18 15h1.5a2.5 2.5 0 0 0 0-5H18" />
-        <path d="M6 15H4.5a2.5 2.5 0 0 1 0-5H6" />
-        <line x1="6" y1="9" x2="18" y2="9" />
-        <line x1="6" y1="15" x2="18" y2="15" />
-        <line x1="10" y1="9" x2="8" y2="21" />
-        <line x1="14" y1="9" x2="16" y2="21" />
+        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+        <path d="M4 22h16" />
+        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+        <path d="M18 2H6v7a6 6 0 0 0 12 0V2z" />
       </svg>
     ),
     title: "Climb the scoreboard",

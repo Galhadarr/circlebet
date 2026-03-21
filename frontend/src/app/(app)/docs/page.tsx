@@ -10,7 +10,6 @@ const sections = [
     content: [
       <>A bet is a question with <span className="font-medium text-text-primary">2–5 result options</span> that you and your circle pick from. Only circle members can create or see bets.</>,
       <>When you create a bet, you choose your option and the bet stays <span className="text-blue font-medium">pending</span> until at least one other person joins. Then it becomes <span className="text-green font-medium">active</span>.</>,
-      <>You can add an optional banner image.</>,
     ],
   },
   {
