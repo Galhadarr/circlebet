@@ -1,37 +1,42 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useParams } from "next/navigation";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useCircle, useUpdateCircleIcon } from "@/hooks/use-circles";
-import { useCircleMarkets } from "@/hooks/use-markets";
-import { useLeaderboard } from "@/hooks/use-portfolio";
+import { useCircleBets, useBet } from "@/hooks/use-bets";
+import type { BetListFilter, BetStatusFilter } from "@/hooks/use-bets";
+import { useLeaderboard } from "@/hooks/use-leaderboard";
 import { useAuthStore } from "@/stores/auth-store";
-import { MarketCard } from "@/components/markets/market-card";
-import { CreateMarketModal } from "@/components/markets/create-market-modal";
+import { BetCard } from "@/components/bets/bet-card";
+import { CreateBetModal } from "@/components/bets/create-bet-modal";
+import { EnterBetModal } from "@/components/bets/enter-bet-modal";
 import { LeaderboardTable } from "@/components/leaderboard/leaderboard-table";
 import { InviteLink } from "@/components/circles/invite-link";
-import { TradeModal } from "@/components/trades/trade-modal";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
 import { api } from "@/lib/api";
 import toast from "react-hot-toast";
-
-type Tab = "active" | "resolved";
+import type { BetDetailResponse, BetResponse } from "@/lib/types";
 
 export default function CirclePage() {
   const { id } = useParams<{ id: string }>();
   const { data: circle, isLoading: circleLoading } = useCircle(id);
-  const { data: markets, isLoading: marketsLoading } = useCircleMarkets(id);
+  const [listFilter, setListFilter] = useState<BetListFilter>("all");
+  const [statusTab, setStatusTab] = useState<BetStatusFilter>("ALL");
+  const statusParam = statusTab === "ALL" ? undefined : statusTab;
+  const { data: bets, isLoading: betsLoading } = useCircleBets(id, listFilter, statusParam);
   const { data: leaderboard } = useLeaderboard(id);
   const userId = useAuthStore((s) => s.user?.id);
   const updateIcon = useUpdateCircleIcon();
-  const [tab, setTab] = useState<Tab>("active");
   const [showCreate, setShowCreate] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [uploadingIcon, setUploadingIcon] = useState(false);
+  const [enterBetId, setEnterBetId] = useState<string | null>(null);
   const iconInputRef = useRef<HTMLInputElement>(null);
+
+  const { data: enterBetDetail } = useBet(enterBetId ?? "");
 
   if (circleLoading) {
     return (
@@ -62,15 +67,12 @@ export default function CirclePage() {
     }
   }
 
-  const activeMarkets =
-    markets?.filter((m) => m.status === "OPEN" || m.status === "CLOSED") ?? [];
-  const resolvedMarkets =
-    markets?.filter((m) => m.status === "RESOLVED") ?? [];
-  const displayed = tab === "active" ? activeMarkets : resolvedMarkets;
+  function openEnterForBet(b: BetResponse) {
+    setEnterBetId(b.id);
+  }
 
   return (
     <div className="space-y-8 animate-fade-in-up" style={{ "--delay": "0s" } as React.CSSProperties}>
-      {/* Back navigation */}
       <Link
         href="/circles"
         className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-text-primary transition-colors"
@@ -81,12 +83,10 @@ export default function CirclePage() {
         Back to circles
       </Link>
 
-      {/* Hero banner */}
       <div className="relative bg-surface border border-border rounded-2xl p-8 shadow-sm">
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-blue/5 to-transparent rounded-bl-full pointer-events-none" />
         <div className="relative">
           <div className="flex items-center gap-3 mb-2">
-            {/* Circle icon with optional 3-dot edit menu for creator */}
             <div className="relative flex-shrink-0">
               {circle.icon_url ? (
                 <div className="w-16 h-16 rounded-full overflow-hidden border border-border shadow-sm">
@@ -104,6 +104,7 @@ export default function CirclePage() {
               {isCreator && (
                 <>
                   <button
+                    type="button"
                     onClick={() => setMenuOpen((o) => !o)}
                     className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-bg-primary border border-border flex items-center justify-center hover:bg-bg-tertiary transition-colors shadow-sm"
                   >
@@ -123,26 +124,22 @@ export default function CirclePage() {
                       <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
                       <div className="absolute left-0 top-14 z-20 w-44 bg-surface border border-border rounded-xl shadow-lg py-1 overflow-hidden">
                         <button
+                          type="button"
                           onClick={() => iconInputRef.current?.click()}
                           disabled={uploadingIcon}
                           className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-text-primary cursor-pointer hover:bg-bg-tertiary hover:text-blue transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          <svg className="w-4 h-4 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                          </svg>
                           Change icon
                         </button>
                         {circle.icon_url && (
                           <button
+                            type="button"
                             onClick={() => {
                               updateIcon.mutate({ circleId: id, iconUrl: null });
                               setMenuOpen(false);
                             }}
                             className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm text-red cursor-pointer hover:bg-red/10 transition-colors duration-150"
                           >
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
                             Remove icon
                           </button>
                         )}
@@ -163,7 +160,7 @@ export default function CirclePage() {
 
             <h1 className="text-3xl font-bold tracking-tight">{circle.name}</h1>
             <Badge variant="blue">{circle.member_count} members</Badge>
-            <Badge variant="purple">{circle.market_count} markets</Badge>
+            <Badge variant="purple">{circle.bet_count} bets</Badge>
           </div>
           {circle.description && (
             <p className="text-sm text-text-secondary max-w-lg">{circle.description}</p>
@@ -171,79 +168,87 @@ export default function CirclePage() {
         </div>
       </div>
 
-      {/* Invite */}
       <InviteLink inviteToken={circle.invite_token} />
 
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Markets */}
         <div className="flex-1 space-y-5">
-          <div className="flex items-center justify-between">
-            <div className="flex gap-1 bg-bg-tertiary rounded-xl p-1">
-              {(["active", "resolved"] as Tab[]).map((t) => (
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-wrap gap-1 bg-bg-tertiary rounded-xl p-1">
+              {(["ALL", "PENDING", "ACTIVE", "FINISHED"] as const).map((t) => (
                 <button
                   key={t}
-                  onClick={() => setTab(t)}
-                  className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition ${
-                    tab === t
+                  type="button"
+                  onClick={() => setStatusTab(t)}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition ${
+                    statusTab === t
                       ? "bg-surface text-text-primary shadow-sm"
                       : "text-text-muted hover:text-text-secondary"
                   }`}
                 >
-                  {t === "active" ? (
-                    <>
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
-                      Active
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      Resolved
-                    </>
-                  )}
+                  {t === "ALL" ? "All" : t.charAt(0) + t.slice(1).toLowerCase()}
                 </button>
               ))}
             </div>
             <Button size="sm" onClick={() => setShowCreate(true)}>
-              + Market
+              + Bet
             </Button>
           </div>
 
-          {marketsLoading ? (
+          <div className="flex flex-wrap gap-2 text-sm">
+            <span className="text-text-muted self-center mr-1">Show:</span>
+            {(
+              [
+                ["all", "All bets"],
+                ["entered", "My bets"],
+                ["created", "Created by me"],
+              ] as const
+            ).map(([val, label]) => (
+              <button
+                key={val}
+                type="button"
+                onClick={() => setListFilter(val)}
+                className={`px-3 py-1.5 rounded-lg border transition ${
+                  listFilter === val
+                    ? "border-blue bg-blue/10 text-blue"
+                    : "border-border text-text-secondary hover:bg-bg-tertiary"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {betsLoading ? (
             <div className="flex justify-center py-12">
               <Spinner />
             </div>
-          ) : displayed.length > 0 ? (
+          ) : bets && bets.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {displayed.map((market, i) => (
+              {bets.map((bet, i) => (
                 <div
-                  key={market.id}
+                  key={bet.id}
                   className="animate-fade-in-up"
                   style={{ "--delay": `${0.05 + i * 0.04}s` } as React.CSSProperties}
                 >
-                  <MarketCard market={market} />
+                  <BetCard
+                    bet={bet}
+                    circleId={id}
+                    onEnter={() => openEnterForBet(bet)}
+                  />
                 </div>
               ))}
             </div>
           ) : (
             <div className="text-center py-16 bg-surface border border-border rounded-2xl shadow-sm">
-              <p className="text-text-secondary">
-                {tab === "active"
-                  ? "No active markets yet. Create one!"
-                  : "No resolved markets yet."}
-              </p>
+              <p className="text-text-secondary">No bets match your filters.</p>
             </div>
           )}
         </div>
 
-        {/* Leaderboard sidebar */}
         <div className="lg:w-80 space-y-4">
           <div className="bg-surface border border-border rounded-2xl p-5 shadow-sm">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="font-semibold">Leaderboard</h2>
+              <h2 className="font-semibold">Scoreboard</h2>
               <Link
                 href={`/circle/${id}/leaderboard`}
                 className="text-xs text-blue hover:underline font-medium"
@@ -254,18 +259,22 @@ export default function CirclePage() {
             {leaderboard && leaderboard.length > 0 ? (
               <LeaderboardTable entries={leaderboard.slice(0, 5)} />
             ) : (
-              <p className="text-sm text-text-muted text-center py-4">No data yet.</p>
+              <p className="text-sm text-text-muted text-center py-4">No scores yet.</p>
             )}
           </div>
         </div>
       </div>
 
-      <CreateMarketModal
-        circleId={id}
-        isOpen={showCreate}
-        onClose={() => setShowCreate(false)}
+      <CreateBetModal circleId={id} isOpen={showCreate} onClose={() => setShowCreate(false)} />
+
+      <EnterBetModal
+        bet={enterBetDetail ? (enterBetDetail as BetDetailResponse) : null}
+        isOpen={!!enterBetId}
+        isLoading={!!enterBetId && !enterBetDetail}
+        onClose={() => {
+          setEnterBetId(null);
+        }}
       />
-      <TradeModal />
     </div>
   );
 }

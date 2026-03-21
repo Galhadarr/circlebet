@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useAuthStore } from "@/stores/auth-store";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ProfileDropdown } from "@/components/layout/profile-dropdown";
+import { NotificationBell } from "@/components/notifications/notification-bell";
 
 const navTabs = [
   {
@@ -29,12 +30,15 @@ const navTabs = [
     ),
   },
   {
-    href: "/portfolio",
-    label: "Portfolio",
+    href: "/notifications",
+    label: "Inbox",
     icon: (
       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+        />
       </svg>
     ),
   },
@@ -109,7 +113,10 @@ export function Header() {
         {/* Right side */}
         <div className="flex items-center gap-3 shrink-0">
           {isAuthenticated ? (
-            <ProfileDropdown />
+            <>
+              <NotificationBell />
+              <ProfileDropdown />
+            </>
           ) : (
             <>
               <ThemeToggle />

@@ -68,7 +68,7 @@ async def members(
         CircleMemberResponse(
             user_id=m.user_id,
             display_name=m.user.display_name,
-            balance=m.balance,
+            score=m.score,
             joined_at=m.joined_at,
         )
         for m in members

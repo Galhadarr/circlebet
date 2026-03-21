@@ -20,4 +20,4 @@ class Circle(Base):
 
     creator: Mapped["User"] = relationship(back_populates="created_circles")
     members: Mapped[list["CircleMember"]] = relationship(back_populates="circle")
-    markets: Mapped[list["Market"]] = relationship(back_populates="circle")
+    bets: Mapped[list["Bet"]] = relationship(back_populates="circle")

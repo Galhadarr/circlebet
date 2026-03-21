@@ -5,52 +5,30 @@ import { useAuthStore } from "@/stores/auth-store";
 import { Header } from "@/components/layout/header";
 import { BottomNav } from "@/components/layout/bottom-nav";
 
-function MockMarketCard() {
-  const yesPrice = 0.63;
-  const noPrice = 0.37;
-  const yesPct = Math.round(yesPrice * 100);
-
+function MockBetCard() {
   return (
-    <div className="w-full max-w-sm bg-surface border border-border rounded-2xl p-5 shadow-lg">
-      <div className="flex items-center gap-2 mb-3">
-        <div className="w-8 h-8 rounded-full bg-blue-dim flex items-center justify-center text-sm">
-          🏀
+    <div className="w-full max-w-sm bg-surface border border-border rounded-2xl overflow-hidden shadow-lg">
+      <div className="h-24 bg-gradient-to-br from-blue/25 via-purple/20 to-green/15" />
+      <div className="p-5 space-y-4">
+        <div className="flex items-center justify-between">
+          <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-green-dim text-green">ACTIVE</span>
+          <span className="text-xs text-text-muted">6 players</span>
         </div>
-        <div>
-          <p className="text-xs text-text-muted font-mono">Sports &middot; Closes Mar 15</p>
+        <h3 className="font-semibold text-text-primary leading-snug">
+          Who picks the restaurant tonight?
+        </h3>
+        <div className="space-y-2">
+          {["Sushi", "Tacos", "Pizza"].map((label, i) => (
+            <div
+              key={label}
+              className="flex justify-between rounded-xl border border-border px-3 py-2 text-sm"
+            >
+              <span>{label}</span>
+              <span className="text-text-muted font-mono">{[3, 2, 1][i]} picks</span>
+            </div>
+          ))}
         </div>
-      </div>
-      <h3 className="font-semibold text-text-primary mb-4 leading-snug">
-        Will the Celtics win the NBA Championship?
-      </h3>
-      {/* Ratio bar */}
-      <div className="flex h-2 rounded-full overflow-hidden mb-4">
-        <div className="bg-green" style={{ width: `${yesPct}%` }} />
-        <div className="bg-red" style={{ width: `${100 - yesPct}%` }} />
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        <button className="flex flex-col items-center gap-1 py-3 rounded-xl bg-green-dim border border-green/20 hover:border-green/40 transition">
-          <span className="text-xs font-mono text-text-muted">YES</span>
-          <span className="text-xl font-bold font-mono text-green">
-            {yesPrice.toFixed(2)}
-          </span>
-          <span className="text-xs text-text-muted font-mono">
-            {(1 / yesPrice).toFixed(1)}x
-          </span>
-        </button>
-        <button className="flex flex-col items-center gap-1 py-3 rounded-xl bg-red-dim border border-red/20 hover:border-red/40 transition">
-          <span className="text-xs font-mono text-text-muted">NO</span>
-          <span className="text-xl font-bold font-mono text-red">
-            {noPrice.toFixed(2)}
-          </span>
-          <span className="text-xs text-text-muted font-mono">
-            {(1 / noPrice).toFixed(1)}x
-          </span>
-        </button>
-      </div>
-      <div className="flex justify-between mt-3 text-xs text-text-muted font-mono">
-        <span>Vol: 2,431 shares</span>
-        <span>12 traders</span>
+        <p className="text-xs text-text-muted text-center">Win +1 pt · lose −1 · double down for ±2</p>
       </div>
     </div>
   );
@@ -65,8 +43,8 @@ const features = [
         <line x1="8" y1="12" x2="16" y2="12" />
       </svg>
     ),
-    title: "Create Markets",
-    desc: "Ask a question about anything — sports, politics, your friend's love life. Set a deadline and let the market decide.",
+    title: "Create bets",
+    desc: "Write the question, add 2–5 options, optional banner, and invite your circle to pick a side.",
   },
   {
     icon: (
@@ -75,8 +53,8 @@ const features = [
         <polyline points="16 7 22 7 22 13" />
       </svg>
     ),
-    title: "Trade Predictions",
-    desc: "Buy YES or NO shares. Prices move with demand — buy low, sell high, and cash out when the market resolves.",
+    title: "Pick & double down",
+    desc: "Join active bets, choose an outcome, and optionally double down so wins and losses count double on the scoreboard.",
   },
   {
     icon: (
@@ -90,8 +68,8 @@ const features = [
         <line x1="14" y1="9" x2="16" y2="21" />
       </svg>
     ),
-    title: "Compete on Leaderboards",
-    desc: "Track who has the sharpest predictions. Climb the ranks and prove you know what's coming next.",
+    title: "Climb the scoreboard",
+    desc: "Every circle has its own leaderboard — medals for the top three, points that can go negative, pure bragging rights.",
   },
   {
     icon: (
@@ -103,7 +81,7 @@ const features = [
       </svg>
     ),
     title: "Private Circles",
-    desc: "Invite your friends to a private group. Keep your markets personal, competitive, and fun.",
+    desc: "Invite your friends to a private group. Bets and scores stay inside each circle.",
   },
 ];
 
@@ -115,13 +93,13 @@ const steps = [
   },
   {
     num: "02",
-    title: "Post a Market",
-    desc: "Ask a question about the future. Set the stakes and a resolution date.",
+    title: "Drop a bet",
+    desc: "Multi-option question, optional time limit, you pick your side first.",
   },
   {
     num: "03",
-    title: "Trade & Win",
-    desc: "Buy shares on outcomes you believe in. Earn when you're right.",
+    title: "Friends join in",
+    desc: "Once someone else enters, the bet goes live. Creator resolves when it’s time.",
   },
 ];
 
@@ -154,8 +132,8 @@ export default function LandingPage() {
               </span>
             </h1>
             <p className="text-lg text-text-secondary mb-8 max-w-md leading-relaxed">
-              Prediction markets for your circle of friends. Create questions, trade
-              on outcomes, and prove who really knows what's going to happen.
+              Private circles, multi-option bets, and a scoreboard that updates with every
+              win and loss — no fake money, just points and pride.
             </p>
             <div className="flex gap-4">
               {token ? (
@@ -187,7 +165,7 @@ export default function LandingPage() {
             className="flex justify-center animate-fade-in-up"
             style={{ "--delay": "0.15s" } as React.CSSProperties}
           >
-            <MockMarketCard />
+            <MockBetCard />
           </div>
         </div>
       </section>
@@ -204,7 +182,7 @@ export default function LandingPage() {
           className="text-text-secondary text-center mb-12 max-w-lg mx-auto animate-fade-in-up"
           style={{ "--delay": "0.25s" } as React.CSSProperties}
         >
-          A full prediction market platform, built for friend groups.
+          Built for friend groups who love hot takes and cold hard scores.
         </p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {features.map((f, i) => (
@@ -268,7 +246,7 @@ export default function LandingPage() {
             where your mouth is?
           </h2>
           <p className="text-text-secondary mb-8 max-w-md mx-auto">
-            Join CircleBet and start trading on the things that matter to you and your friends.
+            Join CircleBet and run bets on the things that matter to you and your friends.
           </p>
           <Link
             href={token ? "/circles" : "/register"}

@@ -40,7 +40,7 @@ export function CircleCard({ circle }: { circle: CircleResponse }) {
           </div>
           <div className="flex items-center gap-1.5 flex-shrink-0 ml-2">
             <Badge variant="blue">{circle.member_count} members</Badge>
-            <Badge variant="purple">{circle.market_count} markets</Badge>
+            <Badge variant="purple">{circle.bet_count} bets</Badge>
           </div>
         </div>
         {circle.description && (

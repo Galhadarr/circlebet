@@ -5,13 +5,12 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.config import settings
-from app.exceptions import AlreadyMember
+from app.models.bet import Bet
 from app.models.circle import Circle
 from app.models.circle_member import CircleMember
-from app.models.market import Market
 from app.models.user import User
 from app.schemas.circle import CircleCreate, CircleResponse
+from app.exceptions import AlreadyMember
 
 
 async def create_circle(db: AsyncSession, user: User, req: CircleCreate) -> CircleResponse:
@@ -28,7 +27,7 @@ async def create_circle(db: AsyncSession, user: User, req: CircleCreate) -> Circ
     member = CircleMember(
         user_id=user.id,
         circle_id=circle.id,
-        balance=settings.INITIAL_BALANCE,
+        score=0,
     )
     db.add(member)
     await db.commit()
@@ -42,6 +41,7 @@ async def create_circle(db: AsyncSession, user: User, req: CircleCreate) -> Circ
         invite_token=circle.invite_token,
         creator_id=circle.creator_id,
         member_count=1,
+        bet_count=0,
         created_at=circle.created_at,
     )
 
@@ -51,10 +51,10 @@ async def get_user_circles(db: AsyncSession, user: User) -> list[CircleResponse]
         select(
             Circle,
             func.count(CircleMember.user_id.distinct()).label("member_count"),
-            func.count(Market.id.distinct()).label("market_count"),
+            func.count(Bet.id.distinct()).label("bet_count"),
         )
         .join(CircleMember, Circle.id == CircleMember.circle_id)
-        .outerjoin(Market, Circle.id == Market.circle_id)
+        .outerjoin(Bet, Circle.id == Bet.circle_id)
         .where(
             Circle.id.in_(
                 select(CircleMember.circle_id).where(CircleMember.user_id == user.id)
@@ -72,10 +72,10 @@ async def get_user_circles(db: AsyncSession, user: User) -> list[CircleResponse]
             invite_token=circle.invite_token,
             creator_id=circle.creator_id,
             member_count=member_count,
-            market_count=market_count,
+            bet_count=bet_count,
             created_at=circle.created_at,
         )
-        for circle, member_count, market_count in result.all()
+        for circle, member_count, bet_count in result.all()
     ]
 
 
@@ -87,11 +87,11 @@ async def get_circle(db: AsyncSession, circle_id: uuid.UUID, user: User) -> Circ
     counts_result = await db.execute(
         select(
             func.count(CircleMember.user_id.distinct()).label("member_count"),
-            func.count(Market.id.distinct()).label("market_count"),
+            func.count(Bet.id.distinct()).label("bet_count"),
         )
         .select_from(Circle)
         .outerjoin(CircleMember, CircleMember.circle_id == circle_id)
-        .outerjoin(Market, Market.circle_id == circle_id)
+        .outerjoin(Bet, Bet.circle_id == circle_id)
         .where(Circle.id == circle_id)
     )
     row = counts_result.one()
@@ -104,7 +104,7 @@ async def get_circle(db: AsyncSession, circle_id: uuid.UUID, user: User) -> Circ
         invite_token=circle.invite_token,
         creator_id=circle.creator_id,
         member_count=row.member_count,
-        market_count=row.market_count,
+        bet_count=row.bet_count,
         created_at=circle.created_at,
     )
 
@@ -122,7 +122,7 @@ async def join_circle(db: AsyncSession, user: User, invite_token: str) -> Circle
     member = CircleMember(
         user_id=user.id,
         circle_id=circle.id,
-        balance=settings.INITIAL_BALANCE,
+        score=0,
     )
     db.add(member)
     await db.commit()
@@ -130,11 +130,11 @@ async def join_circle(db: AsyncSession, user: User, invite_token: str) -> Circle
     counts_result = await db.execute(
         select(
             func.count(CircleMember.user_id.distinct()).label("member_count"),
-            func.count(Market.id.distinct()).label("market_count"),
+            func.count(Bet.id.distinct()).label("bet_count"),
         )
         .select_from(Circle)
         .outerjoin(CircleMember, CircleMember.circle_id == circle.id)
-        .outerjoin(Market, Market.circle_id == circle.id)
+        .outerjoin(Bet, Bet.circle_id == circle.id)
         .where(Circle.id == circle.id)
     )
     row = counts_result.one()
@@ -147,7 +147,7 @@ async def join_circle(db: AsyncSession, user: User, invite_token: str) -> Circle
         invite_token=circle.invite_token,
         creator_id=circle.creator_id,
         member_count=row.member_count,
-        market_count=row.market_count,
+        bet_count=row.bet_count,
         created_at=circle.created_at,
     )
 
@@ -168,11 +168,11 @@ async def update_circle_icon(
     counts_result = await db.execute(
         select(
             func.count(CircleMember.user_id.distinct()).label("member_count"),
-            func.count(Market.id.distinct()).label("market_count"),
+            func.count(Bet.id.distinct()).label("bet_count"),
         )
         .select_from(Circle)
         .outerjoin(CircleMember, CircleMember.circle_id == circle_id)
-        .outerjoin(Market, Market.circle_id == circle_id)
+        .outerjoin(Bet, Bet.circle_id == circle_id)
         .where(Circle.id == circle_id)
     )
     row = counts_result.one()
@@ -185,7 +185,7 @@ async def update_circle_icon(
         invite_token=circle.invite_token,
         creator_id=circle.creator_id,
         member_count=row.member_count,
-        market_count=row.market_count,
+        bet_count=row.bet_count,
         created_at=circle.created_at,
     )
 

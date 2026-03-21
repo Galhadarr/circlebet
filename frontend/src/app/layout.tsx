@@ -25,13 +25,13 @@ export const viewport = {
 
 export const metadata: Metadata = {
   title: "CircleBet",
-  description: "Prediction markets for your circle of friends",
+  description: "Private circles, multi-option bets, and a live scoreboard",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
   ),
   openGraph: {
     title: "CircleBet",
-    description: "Prediction markets for your circle of friends",
+    description: "Private circles, multi-option bets, and a live scoreboard",
     siteName: "CircleBet",
     images: [
       {
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "CircleBet",
-    description: "Prediction markets for your circle of friends",
+    description: "Private circles, multi-option bets, and a live scoreboard",
     images: ["/og-image.png"],
   },
   icons: {
