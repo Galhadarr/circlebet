@@ -15,10 +15,10 @@ function MockBetCard() {
           <span className="text-xs text-text-muted">6 players</span>
         </div>
         <h3 className="font-semibold text-text-primary leading-snug">
-          Who picks the restaurant tonight?
+          מתי תהיה האזעקה הבאה?
         </h3>
         <div className="space-y-2">
-          {["Sushi", "Tacos", "Pizza"].map((label, i) => (
+          {["לפני 2 בלילה", "בין 2-5 בלילה", "אחרי 5 בלילה"].map((label, i) => (
             <div
               key={label}
               className="flex justify-between rounded-xl border border-border px-3 py-2 text-sm"
@@ -38,13 +38,25 @@ const features = [
   {
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+    title: "Private Circles",
+    desc: "Invite your friends to a private group. Bets and scores stay inside each circle.",
+  },
+  {
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10" />
         <line x1="12" y1="8" x2="12" y2="16" />
         <line x1="8" y1="12" x2="16" y2="12" />
       </svg>
     ),
     title: "Create bets",
-    desc: "Write the question, add 2–5 options, optional banner, and invite your circle to pick a side.",
+    desc: "Write the question, add 2–5 options, optional banner, and invite your circle to bet on it.",
   },
   {
     icon: (
@@ -69,19 +81,7 @@ const features = [
       </svg>
     ),
     title: "Climb the scoreboard",
-    desc: "Every circle has its own leaderboard — medals for the top three, points that can go negative, pure bragging rights.",
-  },
-  {
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-        <circle cx="9" cy="7" r="4" />
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-      </svg>
-    ),
-    title: "Private Circles",
-    desc: "Invite your friends to a private group. Bets and scores stay inside each circle.",
+    desc: "Every circle has its own leaderboard — medals for the top three, pure bragging rights.",
   },
 ];
 
@@ -133,7 +133,7 @@ export default function LandingPage() {
             </h1>
             <p className="text-lg text-text-secondary mb-8 max-w-md leading-relaxed">
               Private circles, multi-option bets, and a scoreboard that updates with every
-              win and loss — no fake money, just points and pride.
+              win and loss.
             </p>
             <div className="flex gap-4">
               {token ? (
@@ -176,7 +176,7 @@ export default function LandingPage() {
           className="text-3xl font-bold text-center mb-4 animate-fade-in-up"
           style={{ "--delay": "0.2s" } as React.CSSProperties}
         >
-          Everything you need to predict the future
+          Lets see who can predict the future the most times
         </h2>
         <p
           className="text-text-secondary text-center mb-12 max-w-lg mx-auto animate-fade-in-up"
