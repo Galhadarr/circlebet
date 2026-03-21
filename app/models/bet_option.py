@@ -14,5 +14,5 @@ class BetOption(Base):
     label: Mapped[str] = mapped_column(String(200), nullable=False)
     position: Mapped[int] = mapped_column(Integer, nullable=False)
 
-    bet: Mapped["Bet"] = relationship(back_populates="options")
+    bet: Mapped["Bet"] = relationship(back_populates="options", foreign_keys=[bet_id])
     entries: Mapped[list["BetEntry"]] = relationship(back_populates="option")
