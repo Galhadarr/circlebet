@@ -7,6 +7,7 @@ import type {
   UserResponse,
   LoginRequest,
   RegisterRequest,
+  UpdateProfileRequest,
 } from "@/lib/types";
 import { useAuthStore } from "@/stores/auth-store";
 
@@ -51,6 +52,20 @@ export function useRegister() {
     },
     onSuccess: ({ token, user }) => {
       setAuth(token.access_token, user);
+      queryClient.setQueryData(["auth", "me"], user);
+    },
+  });
+}
+
+export function useUpdateProfile() {
+  const setUser = useAuthStore((s) => s.setUser);
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: UpdateProfileRequest) =>
+      api.patch<UserResponse>("/auth/me", data),
+    onSuccess: (user) => {
+      setUser(user);
       queryClient.setQueryData(["auth", "me"], user);
     },
   });

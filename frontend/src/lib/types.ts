@@ -115,6 +115,10 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface UpdateProfileRequest {
+  display_name: string;
+}
+
 export interface CircleCreate {
   name: string;
   description?: string | null;
