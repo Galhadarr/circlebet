@@ -6,25 +6,11 @@ const sections = [
         <polyline points="16 7 22 7 22 13" />
       </svg>
     ),
-    title: "How Markets Work",
+    title: "Bets",
     content: [
-      <>Each market is a yes/no question (e.g. &quot;Will it rain tomorrow?&quot;). You can buy <span className="text-green font-medium">YES</span> or <span className="text-red font-medium">NO</span> shares, priced between <span className="font-mono">$0</span> and <span className="font-mono">$1</span>.</>,
-      <>Prices reflect the market&apos;s estimated probability. A YES price of <span className="font-mono">$0.70</span> means the market thinks there&apos;s a 70% chance the event happens.</>,
-      <>CircleBet uses <span className="font-medium text-text-primary">LMSR (Logarithmic Market Scoring Rule)</span> pricing — an automated market maker that always provides liquidity. Buying shares pushes the price up; selling pushes it down.</>,
-    ],
-  },
-  {
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-      </svg>
-    ),
-    title: "Trading",
-    content: [
-      "When you buy shares, the cost is calculated by the LMSR formula — it depends on the current price and how many shares you're buying. Larger orders move the price more.",
-      "You'll see the total cost and the average price per share before confirming any trade. The number of shares you receive equals your cost divided by the average price.",
-      "There are no trading fees. The cost you see is the cost you pay.",
+      <>A bet is a question with <span className="font-medium text-text-primary">2–5 result options</span> that you and your circle pick from. Only circle members can create or see bets.</>,
+      <>When you create a bet, you choose your option and the bet stays <span className="text-blue font-medium">pending</span> until at least one other person joins. Then it becomes <span className="text-green font-medium">active</span>.</>,
+      <>You can add an optional banner image — same vibe as the old markets, but simpler: no fake money, just points.</>,
     ],
   },
   {
@@ -34,24 +20,23 @@ const sections = [
         <polyline points="22 4 12 14.01 9 11.01" />
       </svg>
     ),
-    title: "Market Resolution",
+    title: "Resolving & scoring",
     content: [
-      <>The market creator resolves the market as <span className="text-green font-medium">YES</span> or <span className="text-red font-medium">NO</span> once the outcome is known.</>,
-      <>Winning shares pay out <span className="font-mono font-medium text-text-primary">$1.00</span> each. Losing shares are worth <span className="font-mono font-medium text-text-primary">$0.00</span>. Your payout is automatically added to your circle balance.</>,
-      <>If you bought YES shares at <span className="font-mono">$0.60</span> and the market resolves YES, you profit <span className="font-mono text-green">$0.40</span> per share.</>,
+      "The bet creator picks the winning option when the bet ends. If the bet is time-limited, no one can join after the deadline — the creator still resolves it manually.",
+      "Winners gain points (+1, or +2 if you doubled down). Losers lose the same amount. Scores are per circle and can go negative.",
+      "Each circle has a scoreboard ranked by points — climb the podium!",
     ],
   },
   {
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-        <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+        <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
       </svg>
     ),
-    title: "Your Portfolio",
+    title: "Notifications",
     content: [
-      "The Portfolio page shows all your active holdings with mark-to-market values based on current market prices.",
-      "Once a market resolves, your position is paid out and removed from your active holdings.",
+      "You get an inbox notification when a new bet is created or resolved in your circle, and when someone new joins a bet you’re already in.",
+      "Open the bell in the header or use the Inbox tab on mobile.",
     ],
   },
   {
@@ -63,10 +48,10 @@ const sections = [
         <path d="M16 3.13a4 4 0 0 1 0 7.75" />
       </svg>
     ),
-    title: "Circles & Balances",
+    title: "Circles",
     content: [
-      <>Each circle is an independent economy. When you join a circle, you start with a balance of <span className="font-mono font-medium text-text-primary">$10,000</span>.</>,
-      "Your balance in one circle is completely separate from other circles — you can't transfer funds between them. This keeps each group's markets self-contained.",
+      "Each circle is private to its members. You can belong to many circles — each has its own bets and scoreboard.",
+      "Invite friends with your circle’s invite link. Have fun!",
     ],
   },
 ];
@@ -74,7 +59,6 @@ const sections = [
 export default function DocsPage() {
   return (
     <div className="space-y-8 animate-fade-in-up" style={{ "--delay": "0s" } as React.CSSProperties}>
-      {/* Page header */}
       <div>
         <h1 className="text-3xl font-bold tracking-tight">
           How{" "}
@@ -84,11 +68,10 @@ export default function DocsPage() {
           Works
         </h1>
         <p className="text-text-secondary text-sm mt-1">
-          Everything you need to know about prediction markets
+          Bets, points, and bragging rights in your private circles
         </p>
       </div>
 
-      {/* Sections */}
       <div className="space-y-5">
         {sections.map((section, i) => (
           <section

@@ -19,3 +19,4 @@ class User(Base):
 
     memberships: Mapped[list["CircleMember"]] = relationship(back_populates="user")
     created_circles: Mapped[list["Circle"]] = relationship(back_populates="creator")
+    notifications: Mapped[list["Notification"]] = relationship(back_populates="user")

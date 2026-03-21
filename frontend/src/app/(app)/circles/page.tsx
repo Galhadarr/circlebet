@@ -23,7 +23,7 @@ export default function CirclesPage() {
             </span>
           </h1>
           <p className="text-text-secondary text-sm mt-1">
-            Private prediction markets with your friends
+            Private circles, bets, and scoreboards with your friends
           </p>
         </div>
         <Button onClick={() => setShowCreate(true)}>+ New Circle</Button>

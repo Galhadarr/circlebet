@@ -8,21 +8,6 @@ class CircleBetError(Exception):
         self.status_code = status_code
 
 
-class InsufficientBalance(CircleBetError):
-    def __init__(self):
-        super().__init__("Insufficient balance", 400)
-
-
-class MarketNotOpen(CircleBetError):
-    def __init__(self):
-        super().__init__("Market is not open for trading", 400)
-
-
-class MarketNotClosed(CircleBetError):
-    def __init__(self):
-        super().__init__("Market must be closed before resolution", 400)
-
-
 class NotCircleMember(CircleBetError):
     def __init__(self):
         super().__init__("You are not a member of this circle", 403)
@@ -33,19 +18,39 @@ class NotCircleAdmin(CircleBetError):
         super().__init__("Only the circle creator can perform this action", 403)
 
 
-class SellNotAllowed(CircleBetError):
-    def __init__(self):
-        super().__init__("Selling shares is not enabled", 400)
-
-
-class InsufficientShares(CircleBetError):
-    def __init__(self):
-        super().__init__("Insufficient shares to sell", 400)
-
-
 class AlreadyMember(CircleBetError):
     def __init__(self):
         super().__init__("Already a member of this circle", 400)
+
+
+class BetNotFound(CircleBetError):
+    def __init__(self):
+        super().__init__("Bet not found", 404)
+
+
+class BetNotEditable(CircleBetError):
+    def __init__(self):
+        super().__init__("Bet can only be edited while pending", 400)
+
+
+class BetClosedForEntry(CircleBetError):
+    def __init__(self):
+        super().__init__("This bet is not accepting new entries", 400)
+
+
+class AlreadyEnteredBet(CircleBetError):
+    def __init__(self):
+        super().__init__("You have already entered this bet", 400)
+
+
+class NotBetCreator(CircleBetError):
+    def __init__(self):
+        super().__init__("Only the bet creator can perform this action", 403)
+
+
+class BetCannotEnd(CircleBetError):
+    def __init__(self):
+        super().__init__("Bet must be active with at least two participants before it can be resolved", 400)
 
 
 async def circlebet_error_handler(request: Request, exc: CircleBetError) -> JSONResponse:

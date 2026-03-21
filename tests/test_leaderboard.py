@@ -34,5 +34,5 @@ class TestLeaderboard:
         assert len(entries) == 2
         assert entries[0]["rank"] == 1
         assert entries[1]["rank"] == 2
-        # Both should have same balance initially
-        assert entries[0]["balance"] == entries[1]["balance"]
+        # Both should have same score initially
+        assert entries[0]["score"] == entries[1]["score"] == 0

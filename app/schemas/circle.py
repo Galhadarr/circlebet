@@ -1,6 +1,5 @@
 import uuid
 from datetime import datetime
-from decimal import Decimal
 
 from pydantic import BaseModel, Field
 
@@ -19,7 +18,7 @@ class CircleResponse(BaseModel):
     invite_token: str
     creator_id: uuid.UUID
     member_count: int
-    market_count: int = 0
+    bet_count: int = 0
     created_at: datetime
 
 
@@ -30,5 +29,5 @@ class CircleIconUpdate(BaseModel):
 class CircleMemberResponse(BaseModel):
     user_id: uuid.UUID
     display_name: str
-    balance: Decimal
+    score: int
     joined_at: datetime

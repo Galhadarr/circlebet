@@ -15,7 +15,7 @@ async def get_circle_leaderboard(
         select(CircleMember)
         .options(selectinload(CircleMember.user))
         .where(CircleMember.circle_id == circle_id)
-        .order_by(CircleMember.balance.desc())
+        .order_by(CircleMember.score.desc())
     )
     members = result.scalars().all()
 
@@ -24,7 +24,7 @@ async def get_circle_leaderboard(
             rank=i + 1,
             user_id=m.user_id,
             display_name=m.user.display_name,
-            balance=m.balance,
+            score=m.score,
         )
         for i, m in enumerate(members)
     ]
