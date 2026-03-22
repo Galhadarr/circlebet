@@ -301,7 +301,14 @@ async def enter_bet(db: AsyncSession, user: User, bet_id: uuid.UUID, req: BetEnt
                 is_double_down=req.is_double_down,
             )
         )
-        bet.status = BetStatus.ACTIVE
+        await db.flush()
+        # Activate only once at least 2 distinct options are represented
+        distinct = await db.execute(
+            select(func.count(BetEntry.option_id.distinct()))
+            .where(BetEntry.bet_id == bet.id)
+        )
+        if int(distinct.scalar_one()) >= 2:
+            bet.status = BetStatus.ACTIVE
     elif bet.status == BetStatus.ACTIVE:
         db.add(
             BetEntry(

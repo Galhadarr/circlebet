@@ -93,6 +93,11 @@ export default function BetDetailPage() {
           <Badge variant={bet.status === "ACTIVE" ? "green" : bet.status === "PENDING" ? "blue" : "gray"}>
             {bet.status}
           </Badge>
+          {bet.status === "PENDING" && (
+            <p className="text-xs text-text-muted mt-1">
+              Waiting for at least 1 more counter bet to go live
+            </p>
+          )}
           {bet.is_time_limited && bet.end_time && (
             <p className="text-sm text-text-muted mt-2">
               Entries close: {new Date(bet.end_time).toLocaleString()}
