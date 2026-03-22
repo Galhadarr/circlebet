@@ -24,6 +24,10 @@ class TokenResponse(BaseModel):
     token_type: str = "bearer"
 
 
+class UpdateProfileRequest(BaseModel):
+    display_name: str = Field(min_length=3, max_length=15)
+
+
 class UserResponse(BaseModel):
     id: uuid.UUID
     email: str

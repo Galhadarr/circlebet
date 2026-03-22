@@ -15,13 +15,16 @@ function colorFor(name: string) {
 
 interface UserAvatarProps {
   name: string;
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
 }
 
 export function UserAvatar({ name, size = "md" }: UserAvatarProps) {
   const letter = (name?.[0] ?? "?").toUpperCase();
   const color = colorFor(name ?? "");
-  const sizeClass = size === "sm" ? "w-5 h-5 text-[10px]" : "w-7 h-7 text-sm";
+  const sizeClass =
+    size === "sm" ? "w-5 h-5 text-[10px]" :
+    size === "lg" ? "w-14 h-14 text-xl" :
+    "w-7 h-7 text-sm";
 
   return (
     <span

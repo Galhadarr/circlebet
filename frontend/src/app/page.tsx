@@ -5,6 +5,29 @@ import { useAuthStore } from "@/stores/auth-store";
 import { Header } from "@/components/layout/header";
 import { BottomNav } from "@/components/layout/bottom-nav";
 
+const leaderboard = [
+  { rank: 1, name: "WhiteFox", score: 8, medal: "🥇" },
+  { rank: 2, name: "SilverBird", score: 5, medal: "🥈" },
+  { rank: 3, name: "PurpleDragon", score: 3, medal: "🥉" },
+];
+
+function MockLeaderboardCard() {
+  return (
+    <div className="w-44 bg-surface border border-border rounded-2xl shadow-xl p-3 space-y-2">
+      <p className="text-xs font-semibold text-text-primary">Scoreboard</p>
+      {leaderboard.map((entry) => (
+        <div key={entry.rank} className="flex items-center justify-between text-xs">
+          <div className="flex items-center gap-1.5">
+            <span>{entry.medal}</span>
+            <span className="text-text-secondary">{entry.name}</span>
+          </div>
+          <span className="font-mono font-medium text-text-primary">{entry.score} pts</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function MockBetCard() {
   return (
     <div className="w-full max-w-sm bg-surface border border-border rounded-2xl overflow-hidden shadow-lg">
@@ -15,10 +38,10 @@ function MockBetCard() {
           <span className="text-xs text-text-muted">6 players</span>
         </div>
         <h3 className="font-semibold text-text-primary leading-snug">
-          Who picks the restaurant tonight?
+          מתי תהיה האזעקה הבאה?
         </h3>
         <div className="space-y-2">
-          {["Sushi", "Tacos", "Pizza"].map((label, i) => (
+          {["לפני 2 בלילה", "בין 2-5 בלילה", "אחרי 5 בלילה"].map((label, i) => (
             <div
               key={label}
               className="flex justify-between rounded-xl border border-border px-3 py-2 text-sm"
@@ -38,13 +61,25 @@ const features = [
   {
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+    title: "Private Circles",
+    desc: "Invite your friends to a private group. Bets and scores stay inside each circle.",
+  },
+  {
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10" />
         <line x1="12" y1="8" x2="12" y2="16" />
         <line x1="8" y1="12" x2="16" y2="12" />
       </svg>
     ),
     title: "Create bets",
-    desc: "Write the question, add 2–5 options, optional banner, and invite your circle to pick a side.",
+    desc: "Write the question, add 2–5 options, and invite your circle to bet on it.",
   },
   {
     icon: (
@@ -59,29 +94,16 @@ const features = [
   {
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C7 4 9 7 12 7s5-3 7.5-3a2.5 2.5 0 0 1 0 5H18" />
-        <path d="M18 15h1.5a2.5 2.5 0 0 0 0-5H18" />
-        <path d="M6 15H4.5a2.5 2.5 0 0 1 0-5H6" />
-        <line x1="6" y1="9" x2="18" y2="9" />
-        <line x1="6" y1="15" x2="18" y2="15" />
-        <line x1="10" y1="9" x2="8" y2="21" />
-        <line x1="14" y1="9" x2="16" y2="21" />
+        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+        <path d="M4 22h16" />
+        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+        <path d="M18 2H6v7a6 6 0 0 0 12 0V2z" />
       </svg>
     ),
     title: "Climb the scoreboard",
-    desc: "Every circle has its own leaderboard — medals for the top three, points that can go negative, pure bragging rights.",
-  },
-  {
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-        <circle cx="9" cy="7" r="4" />
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-      </svg>
-    ),
-    title: "Private Circles",
-    desc: "Invite your friends to a private group. Bets and scores stay inside each circle.",
+    desc: "Every circle has its own leaderboard — medals for the top three, pure bragging rights.",
   },
 ];
 
@@ -133,7 +155,7 @@ export default function LandingPage() {
             </h1>
             <p className="text-lg text-text-secondary mb-8 max-w-md leading-relaxed">
               Private circles, multi-option bets, and a scoreboard that updates with every
-              win and loss — no fake money, just points and pride.
+              win and loss.
             </p>
             <div className="flex gap-4">
               {token ? (
@@ -165,7 +187,12 @@ export default function LandingPage() {
             className="flex justify-center animate-fade-in-up"
             style={{ "--delay": "0.15s" } as React.CSSProperties}
           >
-            <MockBetCard />
+            <div className="relative">
+              <MockBetCard />
+              <div className="absolute -top-4 -right-10 rotate-2">
+                <MockLeaderboardCard />
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -176,7 +203,7 @@ export default function LandingPage() {
           className="text-3xl font-bold text-center mb-4 animate-fade-in-up"
           style={{ "--delay": "0.2s" } as React.CSSProperties}
         >
-          Everything you need to predict the future
+          Lets see who can predict the future the most times
         </h2>
         <p
           className="text-text-secondary text-center mb-12 max-w-lg mx-auto animate-fade-in-up"

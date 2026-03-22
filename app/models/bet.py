@@ -43,6 +43,7 @@ class Bet(Base):
         back_populates="bet",
         cascade="all, delete-orphan",
         order_by="BetOption.position",
+        foreign_keys="BetOption.bet_id",
     )
     entries: Mapped[list["BetEntry"]] = relationship(
         back_populates="bet",

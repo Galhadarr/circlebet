@@ -11,10 +11,20 @@ from app.models.user import User
 from app.schemas.auth import LoginRequest, RegisterRequest, TokenResponse
 
 
+async def _assert_display_name_available(db: AsyncSession, display_name: str, exclude_user_id=None) -> None:
+    q = select(User).where(User.display_name == display_name)
+    if exclude_user_id is not None:
+        q = q.where(User.id != exclude_user_id)
+    if (await db.execute(q)).scalar_one_or_none():
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Display name already taken")
+
+
 async def register_user(db: AsyncSession, req: RegisterRequest) -> tuple[User, TokenResponse]:
     existing = await db.execute(select(User).where(User.email == req.email))
     if existing.scalar_one_or_none():
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email already registered")
+
+    await _assert_display_name_available(db, req.display_name)
 
     user = User(
         email=req.email,
