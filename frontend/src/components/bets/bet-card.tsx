@@ -46,7 +46,7 @@ export function BetCard({
       : null;
 
   return (
-    <div className="group bg-surface border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-blue/20 transition-all duration-300">
+    <div className="group bg-surface border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:border-blue/30 hover:-translate-y-1 hover:bg-bg-tertiary transition-all duration-200">
       <BetImageBanner title={bet.title} imageUrl={bet.image_url} />
       <div className="p-4 space-y-3">
         <div className="flex items-start justify-between gap-2">
