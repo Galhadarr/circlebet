@@ -27,7 +27,7 @@ export function LeaderboardTable({ entries }: { entries: LeaderboardEntry[] }) {
           <tr className="bg-bg-tertiary/80 text-text-muted text-xs uppercase tracking-wide">
             <th className="px-3 py-2.5 text-left w-14">#</th>
             <th className="px-3 py-2.5 text-left">Player</th>
-            <th className="px-3 py-2.5 text-right">Pts</th>
+            <th className="px-3 py-2.5 text-right">Score</th>
           </tr>
         </thead>
         <tbody>

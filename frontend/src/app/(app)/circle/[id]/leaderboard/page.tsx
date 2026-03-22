@@ -58,7 +58,8 @@ export default function LeaderboardPage() {
                       </div>
                       <p className="font-semibold text-sm truncate">{top3[1].display_name}</p>
                       <p className={`font-mono text-lg mt-1 ${top3[1].score >= 0 ? "text-green" : "text-red"}`}>
-                        {top3[1].score} <span className="text-xs text-text-muted">pts</span>
+                        {top3[1].score}{" "}
+                        <span className="text-xs text-text-muted uppercase">score</span>
                       </p>
                     </div>
                   </div>
@@ -87,7 +88,8 @@ export default function LeaderboardPage() {
                       </div>
                       <p className="font-semibold text-sm truncate">{top3[2].display_name}</p>
                       <p className={`font-mono text-lg mt-1 ${top3[2].score >= 0 ? "text-green" : "text-red"}`}>
-                        {top3[2].score} <span className="text-xs text-text-muted">pts</span>
+                        {top3[2].score}{" "}
+                        <span className="text-xs text-text-muted uppercase">score</span>
                       </p>
                     </div>
                   </div>
