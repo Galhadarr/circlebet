@@ -95,7 +95,7 @@ export default function BetDetailPage() {
           </Badge>
           {bet.status === "PENDING" && (
             <p className="text-xs text-text-muted mt-1">
-              Waiting for someone to pick a different option to go live
+              Waiting for at least 1 more counter bet to go live
             </p>
           )}
           {bet.is_time_limited && bet.end_time && (
