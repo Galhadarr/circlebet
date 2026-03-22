@@ -85,41 +85,48 @@ export default function BetDetailPage() {
         ← Back to circle
       </Link>
 
-      <BetImageBanner title={bet.title} imageUrl={bet.image_url} />
+      <BetImageBanner
+        title={bet.title}
+        imageUrl={bet.image_url}
+        topRight={
+          isCreator && bet.status !== "FINISHED" ? (
+            <label className="cursor-pointer">
+              <span className="sr-only">Change banner</span>
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) void onUpdateImage(f);
+                }}
+              />
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-bg-primary/90 border border-border backdrop-blur-sm shadow-sm hover:bg-bg-tertiary transition-colors">
+                <svg className="w-2.5 h-2.5 text-text-primary" fill="currentColor" viewBox="0 0 24 24">
+                  <circle cx="5" cy="12" r="1.5" />
+                  <circle cx="12" cy="12" r="1.5" />
+                  <circle cx="19" cy="12" r="1.5" />
+                </svg>
+              </span>
+            </label>
+          ) : undefined
+        }
+      />
 
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold">{bet.title}</h1>
-          <Badge variant={bet.status === "ACTIVE" ? "green" : bet.status === "PENDING" ? "blue" : "gray"}>
-            {bet.status}
-          </Badge>
-          {bet.status === "PENDING" && (
-            <p className="text-xs text-text-muted mt-1">
-              Waiting for at least 1 more counter bet to go live
-            </p>
-          )}
-          {bet.is_time_limited && bet.end_time && (
-            <p className="text-sm text-text-muted mt-2">
-              Entries close: {new Date(bet.end_time).toLocaleString()}
-            </p>
-          )}
-        </div>
-        {isCreator && bet.status !== "FINISHED" && (
-          <label className="cursor-pointer">
-            <span className="sr-only">Change banner</span>
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) void onUpdateImage(f);
-              }}
-            />
-            <span className="inline-flex items-center justify-center rounded-lg font-medium px-3 py-1.5 text-sm bg-bg-tertiary border border-border">
-              Change banner
-            </span>
-          </label>
+      <div>
+        <h1 className="text-2xl font-bold">{bet.title}</h1>
+        <Badge variant={bet.status === "ACTIVE" ? "green" : bet.status === "PENDING" ? "blue" : "gray"}>
+          {bet.status}
+        </Badge>
+        {bet.status === "PENDING" && (
+          <p className="text-xs text-text-muted mt-1">
+            Waiting for at least 1 more counter bet to go live
+          </p>
+        )}
+        {bet.is_time_limited && bet.end_time && (
+          <p className="text-sm text-text-muted mt-2">
+            Entries close: {new Date(bet.end_time).toLocaleString()}
+          </p>
         )}
       </div>
 
@@ -167,6 +174,7 @@ export default function BetDetailPage() {
         )}
         {isCreator && bet.status === "ACTIVE" && (
           <Button
+            className="cursor-pointer"
             onClick={() => {
               setResultId(bet.options[0]?.id ?? null);
               setEndOpen(true);
@@ -178,6 +186,7 @@ export default function BetDetailPage() {
         {isCreator && bet.status === "PENDING" && (
           <Button
             variant="red"
+            className="cursor-pointer"
             onClick={() => {
               if (confirm("Delete this pending bet?")) {
                 del.mutate(bet.id, {

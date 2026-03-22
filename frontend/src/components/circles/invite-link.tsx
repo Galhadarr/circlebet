@@ -32,7 +32,7 @@ export function InviteLink({ inviteToken }: { inviteToken: string }) {
     <div ref={ref} className="relative inline-flex">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-bg-tertiary border border-border text-text-secondary hover:text-text-primary hover:bg-bg-hover hover:border-blue/30 transition-all duration-150 active:scale-95"
+        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-bg-tertiary border border-border text-text-secondary hover:text-text-primary hover:bg-bg-hover hover:border-blue/30 transition-all duration-150 active:scale-95 cursor-pointer"
       >
         {/* Add person icon */}
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -48,7 +48,7 @@ export function InviteLink({ inviteToken }: { inviteToken: string }) {
         <div className="absolute top-full left-0 mt-1.5 w-44 bg-bg-secondary border border-border rounded-xl shadow-lg shadow-black/20 z-30 overflow-hidden animate-fade-in-dropdown">
           <button
             onClick={copy}
-            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-hover transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-text-secondary hover:text-text-primary hover:bg-bg-hover transition-colors cursor-pointer"
           >
             {copied ? (
               <>

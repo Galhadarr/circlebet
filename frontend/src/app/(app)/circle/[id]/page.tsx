@@ -106,7 +106,7 @@ export default function CirclePage() {
                   <button
                     type="button"
                     onClick={() => setMenuOpen((o) => !o)}
-                    className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-bg-primary border border-border flex items-center justify-center hover:bg-bg-tertiary transition-colors shadow-sm"
+                    className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-bg-primary border border-border flex items-center justify-center hover:bg-bg-tertiary transition-colors shadow-sm cursor-pointer"
                   >
                     {uploadingIcon ? (
                       <div className="w-3 h-3 border-[1.5px] border-blue border-t-transparent rounded-full animate-spin" />
@@ -179,7 +179,7 @@ export default function CirclePage() {
                   key={t}
                   type="button"
                   onClick={() => setStatusTab(t)}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition ${
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition cursor-pointer ${
                     statusTab === t
                       ? "bg-surface text-text-primary shadow-sm"
                       : "text-text-muted hover:text-text-secondary"
@@ -189,7 +189,7 @@ export default function CirclePage() {
                 </button>
               ))}
             </div>
-            <Button size="sm" onClick={() => setShowCreate(true)}>
+            <Button size="sm" className="cursor-pointer" onClick={() => setShowCreate(true)}>
               + Bet
             </Button>
           </div>
@@ -207,7 +207,7 @@ export default function CirclePage() {
                 key={val}
                 type="button"
                 onClick={() => setListFilter(val)}
-                className={`px-3 py-1.5 rounded-lg border transition ${
+                className={`px-3 py-1.5 rounded-lg border transition cursor-pointer ${
                   listFilter === val
                     ? "border-blue bg-blue/10 text-blue"
                     : "border-border text-text-secondary hover:bg-bg-tertiary"
