@@ -26,14 +26,13 @@ export function BetCard({
   onEnter?: () => void;
 }) {
   const userId = useAuthStore((s) => s.user?.id);
-  const canEnter =
-    bet.status === "ACTIVE" &&
-    !bet.my_entry &&
-    bet.creator_id !== userId;
-  const needsSecond =
-    bet.status === "PENDING" &&
-    userId &&
-    userId !== bet.creator_id;
+  const hasEntered = Boolean(bet.my_entry);
+  const showEnter =
+    !!userId &&
+    bet.status !== "FINISHED" &&
+    !hasEntered &&
+    (bet.status === "ACTIVE" ||
+      (bet.status === "PENDING" && userId !== bet.creator_id));
 
   const timeLeft =
     bet.is_time_limited && bet.end_time
@@ -61,24 +60,21 @@ export function BetCard({
         {bet.description && (
           <p className="text-sm text-text-secondary line-clamp-2">{bet.description}</p>
         )}
-        <div className="flex flex-wrap gap-2 text-xs text-text-muted">
-          <span>{bet.options.length} options</span>
-          <span>·</span>
-          <span>{bet.entries_count} in</span>
-          {bet.is_time_limited && (
-            <>
-              <span>·</span>
-              <span className="text-amber">Closes {timeLeft}</span>
-            </>
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant="gray">{bet.options.length} options</Badge>
+          <Badge variant="blue">{bet.entries_count} in</Badge>
+          {hasEntered && <Badge variant="purple">Voted</Badge>}
+          {bet.is_time_limited && timeLeft && (
+            <span className="text-xs text-amber">Closes {timeLeft}</span>
           )}
         </div>
         <div className="flex gap-2 pt-1">
-          <Link href={`/circle/${circleId}/bet/${bet.id}`} className="flex-1">
-            <Button variant="secondary" size="sm" className="w-full">
+          <Link href={`/circle/${circleId}/bet/${bet.id}`} className="flex-1 cursor-pointer">
+            <Button variant="secondary" size="sm" className="w-full cursor-pointer">
               View
             </Button>
           </Link>
-          {(canEnter || needsSecond) && (
+          {showEnter && (
             <Button
               size="sm"
               className="flex-1"
