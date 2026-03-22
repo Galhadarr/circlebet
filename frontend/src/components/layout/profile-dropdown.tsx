@@ -41,7 +41,7 @@ export function ProfileDropdown() {
       {/* Trigger button */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 rounded-lg px-2 py-1 hover:bg-bg-tertiary transition-colors"
+        className="flex items-center gap-2 rounded-lg px-2 py-1 hover:bg-bg-tertiary transition-colors cursor-pointer"
         aria-label="Open profile menu"
       >
         <UserAvatar name={user.display_name} />
@@ -88,7 +88,7 @@ export function ProfileDropdown() {
           {/* Theme toggle */}
           <button
             onClick={toggleTheme}
-            className="w-full flex items-center justify-between px-4 py-2.5 text-sm text-text-secondary hover:bg-bg-tertiary transition-colors"
+            className="w-full flex items-center justify-between px-4 py-2.5 text-sm text-text-secondary hover:bg-bg-tertiary transition-colors cursor-pointer"
           >
             <div className="flex items-center gap-3">
               {theme === "dark" ? (
@@ -118,7 +118,7 @@ export function ProfileDropdown() {
           {/* Sign out */}
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-text-secondary hover:bg-bg-tertiary hover:text-red transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-text-secondary hover:bg-bg-tertiary hover:text-red transition-colors cursor-pointer"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

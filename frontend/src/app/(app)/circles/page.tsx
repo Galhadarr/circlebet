@@ -26,7 +26,9 @@ export default function CirclesPage() {
             Private circles, bets, and scoreboards with your friends
           </p>
         </div>
-        <Button onClick={() => setShowCreate(true)}>+ New Circle</Button>
+        <Button className="cursor-pointer" onClick={() => setShowCreate(true)}>
+          + New Circle
+        </Button>
       </div>
 
       {isLoading ? (
@@ -61,7 +63,7 @@ export default function CirclesPage() {
           <p className="text-text-secondary mb-4">
             You haven&apos;t joined any circles yet.
           </p>
-          <Button onClick={() => setShowCreate(true)}>
+          <Button className="cursor-pointer" onClick={() => setShowCreate(true)}>
             Create Your First Circle
           </Button>
         </div>
