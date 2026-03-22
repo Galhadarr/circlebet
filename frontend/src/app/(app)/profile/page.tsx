@@ -69,7 +69,7 @@ export default function ProfilePage() {
           <Button
             type="submit"
             disabled={!dirty || updateProfile.isPending}
-            className="w-full"
+            className="w-full cursor-pointer disabled:cursor-not-allowed"
           >
             {updateProfile.isPending ? "Saving…" : "Save changes"}
           </Button>
