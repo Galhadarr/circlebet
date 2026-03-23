@@ -172,22 +172,9 @@ async def create_bet(db: AsyncSession, user: User, req: BetCreate) -> BetRespons
     db.add(bet)
     await db.flush()
 
-    options: list[BetOption] = []
     for i, label in enumerate(req.options):
-        opt = BetOption(bet_id=bet.id, label=label, position=i)
-        db.add(opt)
-        options.append(opt)
+        db.add(BetOption(bet_id=bet.id, label=label, position=i))
     await db.flush()
-
-    chosen = options[req.creator_option_index]
-    db.add(
-        BetEntry(
-            bet_id=bet.id,
-            user_id=user.id,
-            option_id=chosen.id,
-            is_double_down=req.is_double_down,
-        )
-    )
 
     await _notify_bet_created(db, req.circle_id, bet.id, bet.title, user.id)
     await db.commit()
@@ -291,8 +278,6 @@ async def enter_bet(db: AsyncSession, user: User, bet_id: uuid.UUID, req: BetEnt
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid option for this bet")
 
     if bet.status == BetStatus.PENDING:
-        if user.id == bet.creator_id:
-            raise AlreadyEnteredBet()
         db.add(
             BetEntry(
                 bet_id=bet.id,

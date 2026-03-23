@@ -73,8 +73,6 @@ export interface BetCreate {
   is_time_limited: boolean;
   end_time?: string | null;
   options: string[];
-  creator_option_index: number;
-  is_double_down: boolean;
 }
 
 export interface BetEntryCreate {

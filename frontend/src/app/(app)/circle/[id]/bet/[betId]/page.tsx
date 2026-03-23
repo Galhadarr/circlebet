@@ -31,7 +31,7 @@ export default function BetDetailPage() {
     userId &&
     !bet.my_entry &&
     bet.status !== "FINISHED" &&
-    (bet.status === "ACTIVE" || (bet.status === "PENDING" && bet.creator_id !== userId));
+    (bet.status === "ACTIVE" || bet.status === "PENDING");
 
   async function resolveEnd() {
     if (!bet || !resultId) return;

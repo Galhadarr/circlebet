@@ -31,8 +31,7 @@ export function BetCard({
     !!userId &&
     bet.status !== "FINISHED" &&
     !hasEntered &&
-    (bet.status === "ACTIVE" ||
-      (bet.status === "PENDING" && userId !== bet.creator_id));
+    (bet.status === "ACTIVE" || bet.status === "PENDING");
 
   const timeLeft =
     bet.is_time_limited && bet.end_time
