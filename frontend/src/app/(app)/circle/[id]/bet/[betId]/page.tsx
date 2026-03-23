@@ -238,7 +238,7 @@ export default function BetDetailPage() {
               </button>
             ))}
             <div
-              className={`flex w-full items-center gap-1 rounded-xl border px-4 py-3 text-sm font-medium ${
+              className={`flex w-full items-stretch overflow-hidden rounded-xl border text-sm font-medium ${
                 endSelection === "none"
                   ? "border-blue bg-blue/10 text-blue"
                   : "border-border"
@@ -247,28 +247,36 @@ export default function BetDetailPage() {
               <button
                 type="button"
                 onClick={() => setEndSelection("none")}
-                className="cursor-pointer text-left font-medium transition hover:opacity-80"
+                className={`min-w-0 flex-1 cursor-pointer px-4 py-3 text-left font-medium transition ${
+                  endSelection === "none"
+                    ? "hover:bg-blue/15"
+                    : "hover:bg-bg-tertiary/80"
+                }`}
               >
                 None
               </button>
-              <Tooltip
-                side="bottom"
-                content="No winning side. Everyone keeps their score — no points gained or lost for this bet."
+              <div
+                className={`flex shrink-0 items-center border-l py-1 pr-2 pl-1 ${
+                  endSelection === "none" ? "border-blue/25" : "border-border/80"
+                }`}
               >
-                <button
-                  type="button"
-                  data-tooltip-trigger
-                  onClick={(e) => e.stopPropagation()}
-                  onPointerDown={(e) => e.stopPropagation()}
-                  className="-m-0.5 cursor-pointer rounded-full p-0.5 text-text-muted transition hover:bg-bg-hover hover:text-text-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-1 focus-visible:ring-offset-bg-secondary"
-                  aria-label="What does None mean?"
+                <Tooltip
+                  side="bottom"
+                  content="No winning side. Everyone keeps their score — no points gained or lost for this bet."
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M12 16v-4M12 8h.01" />
-                  </svg>
-                </button>
-              </Tooltip>
+                  <button
+                    type="button"
+                    data-tooltip-trigger
+                    className="cursor-pointer rounded-full p-1.5 text-text-muted transition hover:bg-bg-hover hover:text-text-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-1 focus-visible:ring-offset-bg-secondary"
+                    aria-label="What does None mean?"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M12 16v-4M12 8h.01" />
+                    </svg>
+                  </button>
+                </Tooltip>
+              </div>
             </div>
           </div>
           <Button
