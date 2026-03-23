@@ -168,6 +168,9 @@ export function EnterBetModal({
         >
           Confirm
         </Button>
+        <p className="text-center text-[11px] leading-snug text-text-muted">
+          Your pick is final and can&apos;t be changed after you confirm.
+        </p>
       </div>
     </Modal>
   );
