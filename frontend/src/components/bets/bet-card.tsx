@@ -5,6 +5,7 @@ import type { BetResponse } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { BetImageBanner } from "@/components/bets/bet-image-banner";
+import { DoubleDownBadge } from "@/components/bets/double-down-badge";
 import { useAuthStore } from "@/stores/auth-store";
 
 function statusVariant(
@@ -31,8 +32,7 @@ export function BetCard({
     !!userId &&
     bet.status !== "FINISHED" &&
     !hasEntered &&
-    (bet.status === "ACTIVE" ||
-      (bet.status === "PENDING" && userId !== bet.creator_id));
+    (bet.status === "ACTIVE" || bet.status === "PENDING");
 
   const timeLeft =
     bet.is_time_limited && bet.end_time
@@ -63,7 +63,12 @@ export function BetCard({
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="gray">{bet.options.length} options</Badge>
           <Badge variant="blue">{bet.entries_count} in</Badge>
-          {hasEntered && <Badge variant="purple">Voted</Badge>}
+          {hasEntered && (
+            <>
+              <Badge variant="purple">Voted</Badge>
+              {bet.my_entry?.is_double_down && <DoubleDownBadge />}
+            </>
+          )}
           {bet.is_time_limited && timeLeft && (
             <span className="text-xs text-amber">Closes {timeLeft}</span>
           )}

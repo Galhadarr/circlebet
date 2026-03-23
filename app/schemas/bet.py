@@ -47,8 +47,6 @@ class BetCreate(BaseModel):
     is_time_limited: bool = False
     end_time: datetime | None = None
     options: list[str] = Field(min_length=2, max_length=5)
-    creator_option_index: int = Field(ge=0)
-    is_double_down: bool = False
 
     @field_validator("options")
     @classmethod
@@ -60,8 +58,6 @@ class BetCreate(BaseModel):
 
     @model_validator(mode="after")
     def validate_create(self) -> "BetCreate":
-        if self.creator_option_index >= len(self.options):
-            raise ValueError("creator_option_index out of range")
         if self.is_time_limited and self.end_time is None:
             raise ValueError("end_time is required when the bet is time limited")
         if not self.is_time_limited and self.end_time is not None:
@@ -90,4 +86,6 @@ class BetEntryCreate(BaseModel):
 
 
 class BetEndRequest(BaseModel):
-    result_option_id: uuid.UUID
+    """Winning option, or null to close the bet with no winner (no score changes)."""
+
+    result_option_id: uuid.UUID | None

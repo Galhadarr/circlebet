@@ -73,8 +73,6 @@ export interface BetCreate {
   is_time_limited: boolean;
   end_time?: string | null;
   options: string[];
-  creator_option_index: number;
-  is_double_down: boolean;
 }
 
 export interface BetEntryCreate {
@@ -83,7 +81,8 @@ export interface BetEntryCreate {
 }
 
 export interface BetEndRequest {
-  result_option_id: string;
+  /** Winning option id, or null to end with no winner (no points change). */
+  result_option_id: string | null;
 }
 
 export interface NotificationResponse {

@@ -2,14 +2,65 @@
 
 import Link from "next/link";
 import { useAuthStore } from "@/stores/auth-store";
+import { DoubleDownBadge } from "@/components/bets/double-down-badge";
 import { Header } from "@/components/layout/header";
 import { BottomNav } from "@/components/layout/bottom-nav";
+import { Badge } from "@/components/ui/badge";
 
 const leaderboard = [
   { rank: 1, name: "WhiteFox", score: 8, medal: "🥇" },
   { rank: 2, name: "SilverBird", score: 5, medal: "🥈" },
   { rank: 3, name: "PurpleDragon", score: 3, medal: "🥉" },
 ];
+
+/** Non-interactive preview — same cues as a real bet card (badges, options + pick counts), not a link. */
+function HeroBetExample() {
+  const optionRows = [
+    { label: "לפני 2 בלילה", picks: 3 },
+    { label: "בין 2-5 בלילה", picks: 2 },
+    { label: "אחרי 5 בלילה", picks: 1 },
+  ] as const;
+
+  return (
+    <div
+      className="w-full max-w-sm select-none rounded-2xl border border-border bg-surface shadow-lg overflow-hidden pointer-events-none"
+      aria-hidden
+    >
+      <div className="relative h-28 w-full overflow-hidden rounded-t-2xl bg-gradient-to-br from-blue/20 via-purple/15 to-green/10 border-b border-border">
+        <div className="absolute inset-0 opacity-30 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue/40 via-transparent to-transparent" />
+        <div className="absolute bottom-3 left-4 right-4">
+          <p className="text-sm font-medium text-text-secondary line-clamp-2">מתי תהיה האזעקה הבאה?</p>
+        </div>
+      </div>
+      <div className="p-4 space-y-3">
+        <div className="flex items-start justify-between gap-2">
+          <p className="font-semibold text-text-primary leading-snug line-clamp-2">
+            מתי תהיה האזעקה הבאה?
+          </p>
+          <Badge variant="green">ACTIVE</Badge>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant="gray">3 options</Badge>
+          <Badge variant="blue">6 in</Badge>
+          <Badge variant="purple">Voted</Badge>
+          <DoubleDownBadge />
+          <span className="text-xs text-amber">Closes Jun 15, 2030</span>
+        </div>
+        <div className="space-y-2">
+          {optionRows.map((row) => (
+            <div
+              key={row.label}
+              className="flex justify-between rounded-xl border border-border px-3 py-2 text-sm"
+            >
+              <span className="text-text-primary">{row.label}</span>
+              <span className="text-text-muted font-mono tabular-nums">{row.picks} picks</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function MockLeaderboardCard() {
   return (
@@ -24,35 +75,6 @@ function MockLeaderboardCard() {
           <span className="font-mono font-medium text-text-primary">{entry.score} pts</span>
         </div>
       ))}
-    </div>
-  );
-}
-
-function MockBetCard() {
-  return (
-    <div className="w-full max-w-sm bg-surface border border-border rounded-2xl overflow-hidden shadow-lg">
-      <div className="h-24 bg-gradient-to-br from-blue/25 via-purple/20 to-green/15" />
-      <div className="p-5 space-y-4">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-medium px-2 py-0.5 rounded-md bg-green-dim text-green">ACTIVE</span>
-          <span className="text-xs text-text-muted">6 players</span>
-        </div>
-        <h3 className="font-semibold text-text-primary leading-snug">
-          מתי תהיה האזעקה הבאה?
-        </h3>
-        <div className="space-y-2">
-          {["לפני 2 בלילה", "בין 2-5 בלילה", "אחרי 5 בלילה"].map((label, i) => (
-            <div
-              key={label}
-              className="flex justify-between rounded-xl border border-border px-3 py-2 text-sm"
-            >
-              <span>{label}</span>
-              <span className="text-text-muted font-mono">{[3, 2, 1][i]} picks</span>
-            </div>
-          ))}
-        </div>
-        <p className="text-xs text-text-muted text-center">Win +1 pt · lose −1 · double down for ±2</p>
-      </div>
     </div>
   );
 }
@@ -187,8 +209,8 @@ export default function LandingPage() {
             className="flex justify-center animate-fade-in-up"
             style={{ "--delay": "0.15s" } as React.CSSProperties}
           >
-            <div className="relative">
-              <MockBetCard />
+            <div className="relative w-full max-w-sm">
+              <HeroBetExample />
               <div className="absolute -top-4 -right-10 rotate-2">
                 <MockLeaderboardCard />
               </div>

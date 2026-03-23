@@ -8,7 +8,9 @@ import { useBet, useEndBet, useDeleteBet } from "@/hooks/use-bets";
 import { useAuthStore } from "@/stores/auth-store";
 import { BetImageBanner } from "@/components/bets/bet-image-banner";
 import { EnterBetModal } from "@/components/bets/enter-bet-modal";
+import { DoubleDownBadge } from "@/components/bets/double-down-badge";
 import { Modal } from "@/components/ui/modal";
+import { Tooltip } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
@@ -21,7 +23,7 @@ export default function BetDetailPage() {
   const userId = useAuthStore((s) => s.user?.id);
   const [enterOpen, setEnterOpen] = useState(false);
   const [endOpen, setEndOpen] = useState(false);
-  const [resultId, setResultId] = useState<string | null>(null);
+  const [endSelection, setEndSelection] = useState<string | "none" | null>(null);
   const endBet = useEndBet();
   const del = useDeleteBet(circleId ?? "");
 
@@ -31,16 +33,18 @@ export default function BetDetailPage() {
     userId &&
     !bet.my_entry &&
     bet.status !== "FINISHED" &&
-    (bet.status === "ACTIVE" || (bet.status === "PENDING" && bet.creator_id !== userId));
+    (bet.status === "ACTIVE" || bet.status === "PENDING");
 
   async function resolveEnd() {
-    if (!bet || !resultId) return;
+    if (!bet || endSelection === null) return;
     try {
       await endBet.mutateAsync({
         betId: bet.id,
-        data: { result_option_id: resultId },
+        data: {
+          result_option_id: endSelection === "none" ? null : endSelection,
+        },
       });
-      toast.success("Bet resolved!");
+      toast.success(endSelection === "none" ? "Bet closed with no result." : "Bet resolved!");
       setEndOpen(false);
       void refetch();
     } catch (e: unknown) {
@@ -154,17 +158,22 @@ export default function BetDetailPage() {
             );
           })}
         </ul>
+        {bet.status === "FINISHED" && bet.result_option_id === null && (
+          <p className="text-sm text-text-muted">
+            Ended with no winning option — no points were awarded or deducted.
+          </p>
+        )}
       </div>
 
       {bet.my_entry && (
-        <p className="text-sm text-text-secondary">
-          Your pick:{" "}
-          <span className="font-medium text-text-primary">
-            {bet.options.find((o) => o.id === bet.my_entry?.option_id)?.label}
+        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-secondary">
+          <span>
+            Your pick:{" "}
+            <span className="font-medium text-text-primary">
+              {bet.options.find((o) => o.id === bet.my_entry?.option_id)?.label}
+            </span>
           </span>
-          {bet.my_entry.is_double_down && (
-            <span className="text-amber ml-2">(double down)</span>
-          )}
+          {bet.my_entry.is_double_down && <DoubleDownBadge />}
         </p>
       )}
 
@@ -176,7 +185,7 @@ export default function BetDetailPage() {
           <Button
             className="cursor-pointer"
             onClick={() => {
-              setResultId(bet.options[0]?.id ?? null);
+              setEndSelection(bet.options[0]?.id ?? null);
               setEndOpen(true);
             }}
           >
@@ -220,18 +229,59 @@ export default function BetDetailPage() {
               <button
                 key={o.id}
                 type="button"
-                onClick={() => setResultId(o.id)}
-                className={`rounded-xl border px-4 py-3 text-left text-sm font-medium ${
-                  resultId === o.id ? "border-green bg-green-dim/20" : "border-border"
+                onClick={() => setEndSelection(o.id)}
+                className={`cursor-pointer rounded-xl border px-4 py-3 text-left text-sm font-medium ${
+                  endSelection === o.id ? "border-green bg-green-dim/20" : "border-border"
                 }`}
               >
                 {o.label}
               </button>
             ))}
+            <div
+              className={`flex w-full items-stretch overflow-hidden rounded-xl border text-sm font-medium ${
+                endSelection === "none"
+                  ? "border-blue bg-blue/10 text-blue"
+                  : "border-border"
+              }`}
+            >
+              <button
+                type="button"
+                onClick={() => setEndSelection("none")}
+                className={`min-w-0 flex-1 cursor-pointer px-4 py-3 text-left font-medium transition ${
+                  endSelection === "none"
+                    ? "hover:bg-blue/15"
+                    : "hover:bg-bg-tertiary/80"
+                }`}
+              >
+                None
+              </button>
+              <div
+                className={`flex shrink-0 items-center border-l py-1 pr-2 pl-1 ${
+                  endSelection === "none" ? "border-blue/25" : "border-border/80"
+                }`}
+              >
+                <Tooltip
+                  side="bottom"
+                  content="No winning side. Everyone keeps their score — no points gained or lost for this bet."
+                >
+                  <button
+                    type="button"
+                    data-tooltip-trigger
+                    className="cursor-pointer rounded-full p-1.5 text-text-muted transition hover:bg-bg-hover hover:text-text-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-1 focus-visible:ring-offset-bg-secondary"
+                    aria-label="What does None mean?"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M12 16v-4M12 8h.01" />
+                    </svg>
+                  </button>
+                </Tooltip>
+              </div>
+            </div>
           </div>
           <Button
             className="w-full"
-            disabled={!resultId || endBet.isPending}
+            disabled={endSelection === null || endBet.isPending}
             onClick={() => void resolveEnd()}
           >
             Confirm result

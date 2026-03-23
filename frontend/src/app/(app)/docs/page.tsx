@@ -9,7 +9,7 @@ const sections = [
     title: "Bets",
     content: [
       <>A bet is a question with <span className="font-medium text-text-primary">2–5 result options</span> that you and your circle pick from. Only circle members can create or see bets.</>,
-      <>When you create a bet, you choose your option and the bet stays <span className="text-blue font-medium">pending</span> until at least one other person joins. Then it becomes <span className="text-green font-medium">active</span>.</>,
+      <>You set the options when you create a bet; you pick a side afterward from the bet page (same as everyone else). The bet stays <span className="text-blue font-medium">pending</span> until at least two different sides have been chosen. Then it becomes <span className="text-green font-medium">active</span>.</>,
     ],
   },
   {
@@ -21,7 +21,7 @@ const sections = [
     ),
     title: "Resolving & scoring",
     content: [
-      "The bet creator picks the winning option when the bet ends. If the bet is time-limited, no one can join after the deadline — the creator still resolves it manually.",
+      "The bet creator picks the winning option when the bet ends, or chooses no winner so scores stay the same. If the bet is time-limited, no one can join after the deadline — the creator still resolves it manually.",
       "Winners gain points (+1, or +2 if you doubled down). Losers lose the same amount. Scores are per circle and can go negative.",
       "Each circle has a scoreboard ranked by points — climb the podium!",
     ],

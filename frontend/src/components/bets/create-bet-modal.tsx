@@ -24,8 +24,6 @@ export function CreateBetModal({ circleId, isOpen, onClose }: Props) {
   const [isTimeLimited, setIsTimeLimited] = useState(false);
   const [endLocal, setEndLocal] = useState("");
   const [options, setOptions] = useState<string[]>(["", ""]);
-  const [creatorIdx, setCreatorIdx] = useState(0);
-  const [doubleDown, setDoubleDown] = useState(false);
   const createBet = useCreateBet();
 
   function addOption() {
@@ -37,7 +35,6 @@ export function CreateBetModal({ circleId, isOpen, onClose }: Props) {
     if (options.length <= 2) return;
     const next = options.filter((_, j) => j !== i);
     setOptions(next);
-    if (creatorIdx >= next.length) setCreatorIdx(next.length - 1);
   }
 
   async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -64,10 +61,6 @@ export function CreateBetModal({ circleId, isOpen, onClose }: Props) {
       toast.error("Add at least 2 options.");
       return;
     }
-    if (creatorIdx < 0 || creatorIdx >= cleaned.length) {
-      toast.error("Pick which option you're taking.");
-      return;
-    }
     let end_time: string | null = null;
     if (isTimeLimited) {
       if (!endLocal) {
@@ -84,8 +77,6 @@ export function CreateBetModal({ circleId, isOpen, onClose }: Props) {
       is_time_limited: isTimeLimited,
       end_time,
       options: cleaned,
-      creator_option_index: creatorIdx,
-      is_double_down: doubleDown,
     };
     createBet.mutate(payload, {
       onSuccess: () => {
@@ -94,8 +85,6 @@ export function CreateBetModal({ circleId, isOpen, onClose }: Props) {
         setDescription("");
         setImageUrl(null);
         setOptions(["", ""]);
-        setCreatorIdx(0);
-        setDoubleDown(false);
         setIsTimeLimited(false);
         setEndLocal("");
         onClose();
@@ -173,15 +162,6 @@ export function CreateBetModal({ circleId, isOpen, onClose }: Props) {
                 }}
                 placeholder={`Option ${i + 1}`}
               />
-              <label className="flex items-center gap-1 text-xs whitespace-nowrap">
-                <input
-                  type="radio"
-                  name="creatorOpt"
-                  checked={creatorIdx === i}
-                  onChange={() => setCreatorIdx(i)}
-                />
-                Me
-              </label>
               {options.length > 2 && (
                 <Button type="button" variant="secondary" size="sm" onClick={() => removeOption(i)}>
                   ×
@@ -190,10 +170,6 @@ export function CreateBetModal({ circleId, isOpen, onClose }: Props) {
             </div>
           ))}
         </div>
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={doubleDown} onChange={(e) => setDoubleDown(e.target.checked)} />
-          Double down on your pick (±2 pts)
-        </label>
         <Button type="submit" className="w-full" disabled={createBet.isPending}>
           Create bet
         </Button>
