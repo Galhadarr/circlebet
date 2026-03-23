@@ -73,7 +73,7 @@ export function EnterBetModal({
                 key={o.id}
                 type="button"
                 onClick={() => setOptionId(o.id)}
-                className={`rounded-xl border px-4 py-3 text-left text-sm font-medium transition ${
+                className={`cursor-pointer rounded-xl border px-4 py-3 text-left text-sm font-medium transition ${
                   optionId === o.id
                     ? "border-blue bg-blue/10 text-blue"
                     : "border-border hover:bg-bg-tertiary"
@@ -131,7 +131,7 @@ export function EnterBetModal({
                   title="Double down scoring"
                   onClick={(e) => e.stopPropagation()}
                   onPointerDown={(e) => e.stopPropagation()}
-                  className="-m-0.5 rounded-full p-0.5 text-text-muted transition hover:bg-bg-hover hover:text-text-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-1 focus-visible:ring-offset-bg-secondary"
+                  className="-m-0.5 cursor-pointer rounded-full p-0.5 text-text-muted transition hover:bg-bg-hover hover:text-text-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-1 focus-visible:ring-offset-bg-secondary"
                   aria-label="How double down affects your score"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>

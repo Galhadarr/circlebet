@@ -81,7 +81,8 @@ export interface BetEntryCreate {
 }
 
 export interface BetEndRequest {
-  result_option_id: string;
+  /** Winning option id, or null to end with no winner (no points change). */
+  result_option_id: string | null;
 }
 
 export interface NotificationResponse {

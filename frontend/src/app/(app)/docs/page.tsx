@@ -21,7 +21,7 @@ const sections = [
     ),
     title: "Resolving & scoring",
     content: [
-      "The bet creator picks the winning option when the bet ends. If the bet is time-limited, no one can join after the deadline — the creator still resolves it manually.",
+      "The bet creator picks the winning option when the bet ends, or chooses no winner so scores stay the same. If the bet is time-limited, no one can join after the deadline — the creator still resolves it manually.",
       "Winners gain points (+1, or +2 if you doubled down). Losers lose the same amount. Scores are per circle and can go negative.",
       "Each circle has a scoreboard ranked by points — climb the podium!",
     ],

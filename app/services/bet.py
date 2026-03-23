@@ -333,28 +333,31 @@ async def end_bet(db: AsyncSession, user: User, bet_id: uuid.UUID, req: BetEndRe
         raise BetCannotEnd()
 
     option_ids = {o.id for o in bet.options}
-    if req.result_option_id not in option_ids:
+    if req.result_option_id is not None and req.result_option_id not in option_ids:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid result option")
 
     bet.result_option_id = req.result_option_id
     bet.status = BetStatus.FINISHED
 
-    entries_result = await db.execute(select(BetEntry).where(BetEntry.bet_id == bet.id))
-    entries = entries_result.scalars().all()
-    win_id = req.result_option_id
+    if req.result_option_id is not None:
+        entries_result = await db.execute(select(BetEntry).where(BetEntry.bet_id == bet.id))
+        entries = entries_result.scalars().all()
+        win_id = req.result_option_id
 
-    for e in entries:
-        delta = 2 if e.is_double_down else 1
-        cm = await db.get(CircleMember, (e.user_id, bet.circle_id))
-        if not cm:
-            continue
-        if e.option_id == win_id:
-            cm.score += delta
-        else:
-            cm.score -= delta
+        for e in entries:
+            delta = 2 if e.is_double_down else 1
+            cm = await db.get(CircleMember, (e.user_id, bet.circle_id))
+            if not cm:
+                continue
+            if e.option_id == win_id:
+                cm.score += delta
+            else:
+                cm.score -= delta
 
-    result_opt = next((o for o in bet.options if o.id == req.result_option_id), None)
-    result_label = result_opt.label if result_opt else "Unknown"
+        result_opt = next((o for o in bet.options if o.id == req.result_option_id), None)
+        result_label = result_opt.label if result_opt else "Unknown"
+    else:
+        result_label = "No result — scores unchanged"
 
     await _notify_bet_ended(db, bet.id, bet.circle_id, bet.title, result_label)
     await db.commit()

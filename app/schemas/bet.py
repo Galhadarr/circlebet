@@ -86,4 +86,6 @@ class BetEntryCreate(BaseModel):
 
 
 class BetEndRequest(BaseModel):
-    result_option_id: uuid.UUID
+    """Winning option, or null to close the bet with no winner (no score changes)."""
+
+    result_option_id: uuid.UUID | None
