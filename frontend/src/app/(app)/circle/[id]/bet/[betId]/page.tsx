@@ -8,6 +8,7 @@ import { useBet, useEndBet, useDeleteBet } from "@/hooks/use-bets";
 import { useAuthStore } from "@/stores/auth-store";
 import { BetImageBanner } from "@/components/bets/bet-image-banner";
 import { EnterBetModal } from "@/components/bets/enter-bet-modal";
+import { DoubleDownBadge } from "@/components/bets/double-down-badge";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -157,14 +158,14 @@ export default function BetDetailPage() {
       </div>
 
       {bet.my_entry && (
-        <p className="text-sm text-text-secondary">
-          Your pick:{" "}
-          <span className="font-medium text-text-primary">
-            {bet.options.find((o) => o.id === bet.my_entry?.option_id)?.label}
+        <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-secondary">
+          <span>
+            Your pick:{" "}
+            <span className="font-medium text-text-primary">
+              {bet.options.find((o) => o.id === bet.my_entry?.option_id)?.label}
+            </span>
           </span>
-          {bet.my_entry.is_double_down && (
-            <span className="text-amber ml-2">(double down)</span>
-          )}
+          {bet.my_entry.is_double_down && <DoubleDownBadge />}
         </p>
       )}
 

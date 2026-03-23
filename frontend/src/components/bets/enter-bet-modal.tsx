@@ -7,6 +7,7 @@ import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Tooltip } from "@/components/ui/tooltip";
+import { DoubleDownBadge } from "@/components/bets/double-down-badge";
 import { useEnterBet } from "@/hooks/use-bets";
 
 export function EnterBetModal({
@@ -36,6 +37,8 @@ export function EnterBetModal({
   }
 
   const resolvedBet = bet;
+  const counts = resolvedBet.option_counts ?? {};
+  const enteredTotal = resolvedBet.entries_count;
 
   async function submit() {
     if (!optionId) {
@@ -61,20 +64,34 @@ export function EnterBetModal({
       <div className="space-y-4">
         <p className="text-sm text-text-secondary">{resolvedBet.title}</p>
         <div className="grid gap-2 mb-6">
-          {resolvedBet.options.map((o) => (
-            <button
-              key={o.id}
-              type="button"
-              onClick={() => setOptionId(o.id)}
-              className={`rounded-xl border px-4 py-3 text-left text-sm font-medium transition ${
-                optionId === o.id
-                  ? "border-blue bg-blue/10 text-blue"
-                  : "border-border hover:bg-bg-tertiary"
-              }`}
-            >
-              {o.label}
-            </button>
-          ))}
+          {resolvedBet.options.map((o) => {
+            const picked = counts[o.id] ?? 0;
+            const pct =
+              enteredTotal > 0 ? Math.round((picked / enteredTotal) * 100) : null;
+            return (
+              <button
+                key={o.id}
+                type="button"
+                onClick={() => setOptionId(o.id)}
+                className={`rounded-xl border px-4 py-3 text-left text-sm font-medium transition ${
+                  optionId === o.id
+                    ? "border-blue bg-blue/10 text-blue"
+                    : "border-border hover:bg-bg-tertiary"
+                }`}
+              >
+                <span className="flex items-center justify-between gap-3 w-full">
+                  <span className="min-w-0 text-left leading-snug">{o.label}</span>
+                  <span
+                    className={`shrink-0 text-xs font-semibold tabular-nums ${
+                      optionId === o.id ? "text-blue" : "text-text-muted"
+                    }`}
+                  >
+                    {pct !== null ? `${pct}%` : "—"}
+                  </span>
+                </span>
+              </button>
+            );
+          })}
         </div>
         <div
           role="switch"
@@ -127,15 +144,13 @@ export function EnterBetModal({
             <p className="text-xs text-text-muted mt-0.5">Higher stakes on your pick</p>
           </div>
           <div className="flex shrink-0 items-center gap-2.5">
-            <span
-              className={`font-mono text-[11px] font-bold tracking-tight tabular-nums px-2 py-1 rounded-md border transition ${
-                doubleDown
-                  ? "border-amber-400/45 bg-amber-500/25 text-amber-300 shadow-[0_0_12px_-2px_rgba(251,191,36,0.35)]"
-                  : "border-border bg-bg-primary/80 text-text-muted"
-              }`}
-            >
-              ×2
-            </span>
+            {doubleDown ? (
+              <DoubleDownBadge />
+            ) : (
+              <span className="rounded-md border border-border bg-bg-primary/80 px-2 py-1 font-mono text-[11px] font-bold tracking-tight text-text-muted tabular-nums">
+                ×2
+              </span>
+            )}
             <span
               className={`flex h-7 w-12 shrink-0 items-center rounded-full p-0.5 transition-colors duration-200 ${
                 doubleDown ? "justify-end bg-amber-500/45" : "justify-start bg-bg-hover"
