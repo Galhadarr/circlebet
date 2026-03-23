@@ -128,7 +128,6 @@ export function EnterBetModal({
                 <button
                   type="button"
                   data-tooltip-trigger
-                  title="Double down scoring"
                   onClick={(e) => e.stopPropagation()}
                   onPointerDown={(e) => e.stopPropagation()}
                   className="-m-0.5 cursor-pointer rounded-full p-0.5 text-text-muted transition hover:bg-bg-hover hover:text-text-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-1 focus-visible:ring-offset-bg-secondary"
